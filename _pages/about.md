@@ -11,7 +11,7 @@ profile:
   more_info: >
     <b>California Institute of Technology</b>
     Department of Electrical Engineering
-    Department of Physics</p>
+    Department of Physics
 
 news: true # includes a list of news items
 selected_papers: true # includes a list of papers marked as "selected={true}"
