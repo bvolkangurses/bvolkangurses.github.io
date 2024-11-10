@@ -9,8 +9,8 @@ profile:
   image: Gurses_Photo.png
   image_circular: true # crops the image to make it circular
   more_info: >
-    <p>1200 E California Blvd, MC 136-93</p>
-    >p>Pasadena, CA 91125</p>
+    <p>1200 E California Blvd</p>
+    <p>Pasadena, CA 91125</p>
 
 news: true # includes a list of news items
 selected_papers: true # includes a list of papers marked as "selected={true}"
