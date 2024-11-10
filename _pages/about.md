@@ -2,7 +2,7 @@
 layout: about
 title: About
 permalink: /
-subtitle: PhD Candidate in Electrical Engineering and Physics at <a href='www.caltech.edu'>Caltech<\a>
+subtitle: PhD Candidate in Electrical Engineering and Physics at Caltech
 
 profile:
   align: right
