@@ -5,7 +5,7 @@ permalink: /
 subtitle: PhD Candidate in Electrical Engineering and Physics at Caltech
 
 profile:
-  align: right
+  align: left
   image: Gurses_Photo.png
   image_circular: true # crops the image to make it circular
   more_info: >
