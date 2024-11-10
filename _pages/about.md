@@ -1,12 +1,12 @@
 ---
 layout: about
-title: about
+title: About
 permalink: /
-subtitle: PhD Candidate in Electrical Engineering and Physics at <a href='caltech.edu'>Caltech<\a>
+subtitle: PhD Candidate in Electrical Engineering and Physics at Caltech
 
 profile:
-  align: left
-  image: prof_pic
+  align: right
+  image: Gurses_Photo
   image_circular: false # crops the image to make it circular
   more_info: >
     <p>California Institute of Technology</p>
