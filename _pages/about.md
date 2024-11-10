@@ -7,7 +7,7 @@ subtitle: PhD Candidate in Electrical Engineering and Physics at Caltech
 profile:
   align: right
   image: Gurses_Photo.png
-  image_circular: false # crops the image to make it circular
+  image_circular: true # crops the image to make it circular
   more_info: >
     <p>California Institute of Technology</p>
     <p>Department of Electrical Engineering</p>
