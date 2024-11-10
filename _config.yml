@@ -129,7 +129,7 @@ bing_site_verification: # out your bing-site-verification ID (Bing Webmaster)
 # -----------------------------------------------------------------------------
 
 blog_name: Volkan Gurses' Blog # blog_name will be displayed in your blog page
-blog_description: Various thoughts about the future of engineering and physics
+blog_description: Various thoughts on the future of engineering and physics
 permalink: /blog/:year/:title/
 lsi: false # produce an index for related posts
 
