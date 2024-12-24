@@ -13,13 +13,13 @@ profile:
     <p>1200 E California Blvd</p>
     <p>Pasadena, CA 91125</p>
 
-news: true # includes a list of news items
+news: false # includes a list of news items
 selected_papers: true # includes a list of papers marked as "selected={true}"
 social: true # includes social icons at the bottom of the page
 ---
 
-I am a PhD candidate in the Department of Electrical Engineering and Physics at Caltech working broadly on integrated systems. I am especially interested in studying the fundamental physical limits of technologies by connecting their high-level realization to fundamental physics and building technologies that achieve these limits.
+I am a PhD candidate in the Department of Electrical Engineering and Physics at Caltech working broadly on integrated circuits. My goal is to build technologies that operates at the fundamental physical limits without overhead.
 
-<b>Research</b>: My PhD research focused on developing large-scale integrated photonic-electronic systems for applications in communications, sensing and computing. I invented various technologies that employ quantum information to achieve superior performance over their classical counterparts. These include quantum phased arrays that generalize the operating principles of antenna arrays to quantum fields and coherent transceivers that utilize non-classical light to achieve higher sensitivity and channel capacity in optical links.
+<b>Research</b>: My PhD research focused on developing large-scale integrated photonic-electronic systems for quantum information science and high-performance computing. I invented various technologies that leverage quantum information to achieve superior performance over their classical counterparts. One example is <a href=https://arxiv.org/abs/2406.09158>quantum phased arrays</a> that generalized antenna theory to quantized electromagnetic fields and demonstrated the first free-space interface for quantum information.
 
-<b>Previously</b>: I received my Bachelor of Science degree in Electrical Engineering at Georgia Institute of Technology, where I worked with Professors Hua Wang, Morris Cohen, Gregory Durgin and Lukas Graber. I was an awardee of the R. David Middlebrook Fellowship, Tau Beta Pi Fellowship, IEEE MTT-S Undergraduate/Pre-Graduate Scholarship, European Union Contest for Young Scientists CERN Special Donated Prize and First Prize in Physics in the Turkish National Secondary School Research Contest.
+<b>Previously</b>: I received my Master of Science degree in Electrical Engineering from Caltech and Bachelor of Science degree in Electrical Engineering from <a href=https://ece.gatech.edu/news/2023/12/gurses-receives-tau-beta-pi-fellowship>Georgia Tech</a>. I was an awardee of the R. David Middlebrook Fellowship, Tau Beta Pi Fellowship, IEEE MTT-S Undergraduate/Pre-Graduate Scholarship, European Union Contest for Young Scientists CERN Special Donated Prize and First Prize in Physics in the Turkish National Secondary School Research Contest.
