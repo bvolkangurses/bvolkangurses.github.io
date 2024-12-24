@@ -18,7 +18,7 @@ selected_papers: true # includes a list of papers marked as "selected={true}"
 social: true # includes social icons at the bottom of the page
 ---
 
-I am a PhD candidate in the Department of Electrical Engineering and Physics at Caltech working broadly on integrated circuits. My goal is to build technologies that operates at the fundamental physical limits.
+I am a PhD candidate in the Department of Electrical Engineering and Physics at Caltech working broadly on integrated systems. My goal is to build technologies that operates at the fundamental physical limits.
 
 <b>Research</b>: My PhD research focused on developing large-scale integrated photonic-electronic systems for quantum information science and high-performance computing. I invented various technologies that leverage quantum information to achieve superior performance over their classical counterparts. One example is <a href=https://arxiv.org/abs/2406.09158>quantum phased arrays</a> that generalized antenna theory to quantized electromagnetic fields and demonstrated the first free-space interface for quantum information.
 
