@@ -12,8 +12,7 @@
       "countryCode": "US",
       "region": "California"
     },
-    "profiles": [
-    ]
+    "profiles": []
   },
   "work": [
     {
@@ -23,11 +22,10 @@
       "startDate": "2020-09",
       "endDate": "Present",
       "summary": "Working in the Caltech Holistic Integrated Circuits Laboratory. Worked on the intersections of classical and quantum hardware.",
-      "highlights": ["Quantum Phased Arrays","Photonic-Electronic Processors","AI for Science"]
+      "highlights": ["Quantum Phased Arrays", "Photonic-Electronic Processors", "AI for Science"]
     }
   ],
-  "volunteer": [
-  ],
+  "volunteer": [],
   "education": [
     {
       "institution": "Georgia Institute of Technology",
@@ -39,10 +37,7 @@
       "endDate": "2020-05"
     }
   ],
-  "awards": [
-  ],
-  "certificates": [
-  ],
-  "publications": [
-  ]
+  "awards": [],
+  "certificates": [],
+  "publications": []
 }
