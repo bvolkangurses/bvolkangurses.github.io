@@ -2,11 +2,11 @@
 layout: about
 title: About
 permalink: /
-subtitle: PhD Candidate in Electrical Engineering and Physics at Caltech \n Researcher at NVIDIA
+subtitle: PhD Candidate in Electrical Engineering and Physics at Caltech | Visiting Researcher at NVIDIA
 
 profile:
   align: right
-  image: Gurses_Photo.png
+  image: Gurses_Photo2.jpg
   image_circular: true # crops the image to make it circular
   more_info: >
     <p><a href="mailto:gurses@caltech.edu">gurses@caltech.edu</a></p>
