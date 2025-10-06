@@ -2,7 +2,7 @@
 layout: post
 title: Fundamental physical limits of technologies
 date: 2025-10-05
-description: A manifesto for studying the fundamental physical limits of technologies
+description: why we should study the fundamental physical limits of technologies
 tags: limits, technologies, physics
 categories: physics
 giscus_comments: true
@@ -19,3 +19,5 @@ Identifying these boundaries is a fruitful endeavor. It enables three things:
 \end{enumerate}
 
 To delineate fundamental physical limits of technologies, we need to start with delineating technologies themselves. Information technologies can be categorized into three groups based on their application domain: 1) Computing technologies 2) Communication technologies 3) Sensing/metrology technologies.
+
+
