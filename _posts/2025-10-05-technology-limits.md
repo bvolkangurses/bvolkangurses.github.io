@@ -23,13 +23,17 @@ To delineate fundamental physical limits of technologies, we need to start with 
 3. Sensing/metrology technologies.
 
 **Fundamental limits**
+
 There are various fundamental physical limits arising from quantum field theory and general relativity. There is only so much entropy or information you can squeeze into a space before it collapses into a black hole. There is only so much you can localize a particle before intrinsic uncertainty from quantum mechanics stop you from deciding where it is.
 
 **Computing limits**
+
 Computing is limited by the Bekenstein limit, quantum speed limit, Landauer limit.
 
 **Communication limits**
+
 Communication is limited by the Holevo limit, speed of light limit.
 
 **Sensing limits**
+
 Sensing is limited by the Heisenberg limit.
