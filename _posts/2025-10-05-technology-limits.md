@@ -5,7 +5,7 @@ date: 2025-10-05
 description: why we should study the fundamental physical limits of technologies
 tags: limits, technologies, physics
 categories: physics
-giscus_comments: true
+giscus_comments: false
 related_posts: false
 related_publications: true
 ---
