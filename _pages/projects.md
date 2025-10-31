@@ -2,7 +2,7 @@
 layout: page
 title: Projects
 permalink: /projects/
-description: Bridging physics and engineering since 2020
+description: Bridging physics and engineering since 2005
 nav: true
 nav_order: 4
 display_categories:
