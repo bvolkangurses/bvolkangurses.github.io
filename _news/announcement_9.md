@@ -5,4 +5,4 @@ inline: true
 related_posts: false
 ---
 
-I gave an invited talk at NVIDIA, titled "Integrated optoelectronic systems for classical and quantum information processing."
+I gave an invited talk at NVIDIA Research.

@@ -5,4 +5,4 @@ inline: true
 related_posts: false
 ---
 
-I gave an invited talk at Stanford University, titled "Information technologies at the fundamental physical limits."
+I gave an invited talk at Stanford University.
