@@ -9,15 +9,17 @@ giscus_comments: false
 related_posts: false
 related_publications: true
 ---
-<!-- 
+
 Technologies leverage discoveries in fundamental sciences for practical purposes, enabling applications not previously attainable. Due to this foundation in fundamental sciences, all technologies have limits bounded by physics. Especially with the dizzying accelerating advancements, technologies can make it seem like they can make anything possible. However, these fundamental physical limits determine the boundaries in performance of all technologies.
 
 Identifying these boundaries is a fruitful endeavor. It enables three things:
+
 1. It allows us to know how far we can go before we are limited by our understanding of nature.
 2. It allows us to understand why our current technologies can't perform better.
 3. It allows us to understand what we can do to make our technologies better.
 
 To delineate fundamental physical limits of technologies, we need to start with delineating technologies themselves. Information technologies can be categorized into three groups based on their application domain:
+
 1. Computing technologies
 2. Communication technologies
 3. Sensing/metrology technologies.
@@ -33,7 +35,8 @@ There are various fundamental physical limits arising from quantum field theory 
 Computing is concerned with the physical manipulation of information, where abstract logical operations are mapped to the state transformations of a physical system. This process involves encoding information into physical states, executing an algorithm through a controlled sequence of these transformations, and decoding the final state to obtain the computational result.
 
 Even before invoking physical laws, the mathematical framework we use to describe information imposes fundamental limits. One example is intrinsic dualities between different descriptive domains, where achieving precision in one domain necessitates a trade-off in another. For example, the relationship between time and energy as Fourier conjugates means a process cannot be arbitrarily localized in both simultaneously. This mathematical uncertainty principle fundamentally limits the theoretical precision of any information manipulation, independent of its physical realization.
-<!-- 
+
+<!--
 This mathematical uncertainty principle happens to show up exactly similarly in quantum mechanics, where the non-commutativity of conjugate operators leads to  -->
 
 Computing is limited by the Bekenstein limit, quantum speed limit, Landauer limit.
@@ -44,4 +47,4 @@ Communication is limited by the Holevo limit, speed of light limit.
 
 **Sensing limits**
 
-Sensing is limited by the Heisenberg limit. -->
+Sensing is limited by the Heisenberg limit.
