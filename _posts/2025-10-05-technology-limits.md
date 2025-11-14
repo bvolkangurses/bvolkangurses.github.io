@@ -9,7 +9,7 @@ giscus_comments: false
 related_posts: false
 related_publications: true
 ---
-
+<!-- 
 Technologies leverage discoveries in fundamental sciences for practical purposes, enabling applications not previously attainable. Due to this foundation in fundamental sciences, all technologies have limits bounded by physics. Especially with the dizzying accelerating advancements, technologies can make it seem like they can make anything possible. However, these fundamental physical limits determine the boundaries in performance of all technologies.
 
 Identifying these boundaries is a fruitful endeavor. It enables three things:
@@ -44,4 +44,4 @@ Communication is limited by the Holevo limit, speed of light limit.
 
 **Sensing limits**
 
-Sensing is limited by the Heisenberg limit.
+Sensing is limited by the Heisenberg limit. -->
