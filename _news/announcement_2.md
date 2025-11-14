@@ -1,8 +1,8 @@
 ---
 layout: post
-date: 2020-06-19
+date: 2020-03-25
 inline: true
 related_posts: false
 ---
 
-Was awarded the Roger P. Webb Undergraduate Research Award given to one undergraduate student at Georgia Tech with outstanding undergraduate research.
+I was awarded the Tau Beta Pi Fellowship, awarded to 20 top engineering students aiming to do a PhD in the US.
