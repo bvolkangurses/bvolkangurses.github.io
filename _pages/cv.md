@@ -1,8 +1,8 @@
 ---
 layout: cv
-permalink: /cv/
+# permalink: /cv/  # Commented out to make page inaccessible
 title: Curriculum Vitae
-nav: true
+nav: false
 nav_order: 2
 cv_pdf: Gurses_CV.pdf
 description:
