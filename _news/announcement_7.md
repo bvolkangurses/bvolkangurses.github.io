@@ -5,4 +5,4 @@ inline: true
 related_posts: false
 ---
 
-I was awarded the Caltech Entrepreneurship Prize.
+My company was awarded the Caltech Entrepreneurship Prize.
