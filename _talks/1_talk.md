@@ -2,7 +2,7 @@
 layout: page
 title: Stanford University
 description: October 30, 2025
-img: assets/img/12.jpg
+img: assets/img/stanford.png
 importance: 1
 category: work
 related_publications: true
