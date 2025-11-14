@@ -50,4 +50,27 @@ body.sticky-bottom-footer {
 * Talks
 *****************************************************************************/
 
-// TODO: redefine talks layout.
+.talks {
+  .card-img-top {
+    height: 200px;
+    object-fit: cover;
+    object-position: center;
+  }
+  
+  .card-img {
+    height: 150px;
+    object-fit: cover;
+    object-position: center;
+  }
+}
+
+// Ensure consistent image heights for any talk-related images
+.talk-page,
+.post {
+  .card-img-top,
+  .talk-cover-img {
+    height: 200px;
+    object-fit: cover;
+    object-position: center;
+  }
+}
