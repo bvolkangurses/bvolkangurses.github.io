@@ -7,3 +7,7 @@ importance: 1
 category: work
 related_publications: true
 ---
+
+### Integrated optoelectronic systems for classical and quantum information processing
+
+{% include slides.liquid %}
