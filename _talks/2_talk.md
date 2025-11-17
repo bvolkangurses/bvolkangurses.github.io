@@ -12,4 +12,3 @@ slides: nvidia_talk_slides.pdf # Add your slides PDF file here (put in assets/pd
 ### Integrated optoelectronic systems for classical and quantum information processing
 
 {% include slides.liquid %}
-
