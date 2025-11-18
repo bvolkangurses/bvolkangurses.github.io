@@ -32,11 +32,11 @@
       document.addEventListener('DOMContentLoaded', function () {
         // Configure PDF.js worker
         pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
-        
+
         const pdfUrl = '{{ "assets/pdf/" | append: page.slides | relative_url }}';
         const uniqueId = '{{ page.slides | replace: ".", "-" | replace: "/", "-" }}';
         const canvas = document.getElementById('pdf-canvas-' + uniqueId);
-        
+
         console.log('Loading PDF from:', pdfUrl);
         const loading = document.querySelector('#pdf-viewer-' + uniqueId + ' .pdf-loading');
         const controls = document.querySelector('#pdf-viewer-' + uniqueId + ' .pdf-controls');
