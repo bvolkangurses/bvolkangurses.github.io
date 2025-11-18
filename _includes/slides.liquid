@@ -30,9 +30,14 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
     <script>
       document.addEventListener('DOMContentLoaded', function () {
+        // Configure PDF.js worker
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+        
         const pdfUrl = '{{ "assets/pdf/" | append: page.slides | relative_url }}';
         const uniqueId = '{{ page.slides | replace: ".", "-" | replace: "/", "-" }}';
         const canvas = document.getElementById('pdf-canvas-' + uniqueId);
+        
+        console.log('Loading PDF from:', pdfUrl);
         const loading = document.querySelector('#pdf-viewer-' + uniqueId + ' .pdf-loading');
         const controls = document.querySelector('#pdf-viewer-' + uniqueId + ' .pdf-controls');
         const progressContainer = document.querySelector('#pdf-viewer-' + uniqueId + ' .pdf-progress-container');
@@ -116,7 +121,7 @@
           })
           .catch(function (error) {
             console.error('Error loading PDF:', error);
-            loading.innerHTML = '<div class="alert alert-warning">Unable to load slides.';
+            loading.innerHTML = '<div class="alert alert-warning">Unable to load slides. Please check if the PDF file exists.</div>';
           });
       });
     </script>
