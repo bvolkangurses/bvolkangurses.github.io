@@ -25,6 +25,9 @@
           <button id="next-btn-{{ page.slides | replace: '.', '-' | replace: '/', '-' }}" class="control-btn">
             <i class="fa-solid fa-chevron-right"></i>
           </button>
+          <button id="fullscreen-btn-{{ page.slides | replace: '.', '-' | replace: '/', '-' }}" class="control-btn fullscreen-btn" title="Full Screen">
+            <i class="fa-solid fa-expand"></i>
+          </button>
         </div>
       </div>
     </div>
@@ -167,6 +170,37 @@
             // Add keyboard event listener to document
             document.addEventListener('keydown', handleKeyPress);
 
+            // Set up full-screen functionality
+            const fullscreenBtn = document.getElementById('fullscreen-btn-' + uniqueId);
+            const pdfViewer = document.getElementById('pdf-viewer-' + uniqueId);
+            
+            fullscreenBtn.addEventListener('click', function () {
+              if (!document.fullscreenElement) {
+                pdfViewer.requestFullscreen().then(function() {
+                  pdfViewer.classList.add('fullscreen-mode');
+                  fullscreenBtn.innerHTML = '<i class="fa-solid fa-compress"></i>';
+                  fullscreenBtn.title = 'Exit Full Screen';
+                }).catch(function(err) {
+                  console.log('Error attempting to enable full-screen:', err.message);
+                });
+              } else {
+                document.exitFullscreen().then(function() {
+                  pdfViewer.classList.remove('fullscreen-mode');
+                  fullscreenBtn.innerHTML = '<i class="fa-solid fa-expand"></i>';
+                  fullscreenBtn.title = 'Full Screen';
+                });
+              }
+            });
+
+            // Handle fullscreen change events (e.g., ESC key)
+            document.addEventListener('fullscreenchange', function() {
+              if (!document.fullscreenElement) {
+                pdfViewer.classList.remove('fullscreen-mode');
+                fullscreenBtn.innerHTML = '<i class="fa-solid fa-expand"></i>';
+                fullscreenBtn.title = 'Full Screen';
+              }
+            });
+
             // Optional: Remove event listener when navigating away (cleanup)
             window.addEventListener('beforeunload', function () {
               document.removeEventListener('keydown', handleKeyPress);
@@ -216,6 +250,23 @@
     .pdf-viewer {
       max-width: 100%;
       margin: 0 auto;
+    }
+
+    .pdf-viewer.fullscreen-mode {
+      background: var(--global-bg-color);
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .pdf-viewer.fullscreen-mode .pdf-canvas {
+      max-height: calc(100vh - 120px);
+      max-width: calc(100vw - 4rem);
+      border: none;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
     }
 
     .pdf-loading {
@@ -381,6 +432,16 @@
       border-color: var(--global-theme-color) !important;
       transform: none;
       box-shadow: none;
+    }
+
+    .fullscreen-btn {
+      margin-left: 0.5rem;
+      opacity: 0.7;
+      transition: opacity 0.2s ease;
+    }
+
+    .fullscreen-btn:hover {
+      opacity: 1;
     }
 
     .pdf-viewer-card {
