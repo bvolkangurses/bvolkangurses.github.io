@@ -1,4 +1,4 @@
 User-agent: *
-Disallow:
+Disallow: /assets/html/
 
 Sitemap: https://bvolkangurses.github.io/sitemap.xml
