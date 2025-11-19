@@ -165,7 +165,7 @@ document.addEventListener('DOMContentLoaded', updateGitHubStats);
     <p class="text-muted">Physics simulations and interactive animations</p>
   </div>  <div class="row row-cols-1 row-cols-md-2 g-4 mb-5">
     
-    <!-- Wave Function Simulation -->
+    <!-- Wavefunction Simulation -->
     <div class="col">
       <div class="card software-card h-100">
         <div class="card-body d-flex flex-column">
@@ -179,6 +179,24 @@ document.addEventListener('DOMContentLoaded', updateGitHubStats);
               <i class="fas fa-play"></i> Launch
             </a>
             <a href="https://github.com/bvolkangurses/wavefunctionsim" class="btn software-btn-outline">
+              <i class="fab fa-github"></i> Code
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Wigner Function Simulation -->
+    <div class="col">
+      <div class="card software-card h-100">
+        <div class="card-body d-flex flex-column">
+          <div class="software-icon mb-3 text-center">
+            <i class="fas fa-chart-area fa-3x"></i>
+          </div>
+          <h5 class="card-title">Wigner Function Simulation</h5>
+          <p class="card-text flex-grow-1">Design your own quantum state in phase space using the Wigner quasiprobability distribution and see it time evolve.</p>
+          <div class="mt-auto">
+            <a href="https://github.com/bvolkangurses/wignersim" class="btn software-btn-outline">
               <i class="fab fa-github"></i> Code
             </a>
           </div>
@@ -220,6 +238,24 @@ document.addEventListener('DOMContentLoaded', updateGitHubStats);
       </div>
     </div>
     -->
+
+    <!-- Neural Network Architect -->
+    <div class="col">
+      <div class="card software-card h-100">
+        <div class="card-body d-flex flex-column">
+          <div class="software-icon mb-3 text-center">
+            <i class="fas fa-brain fa-3x"></i>
+          </div>
+          <h5 class="card-title">Neural Network Architect</h5>
+          <p class="card-text flex-grow-1">Interactive tool for designing and visualizing neural network architectures with drag-and-drop layer composition.</p>
+          <div class="mt-auto">
+            <a href="https://github.com/bvolkangurses/neuralnetarchitect" class="btn software-btn-outline">
+              <i class="fab fa-github"></i> Code
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <!-- Photonic IC Designer -->
     <div class="col">
