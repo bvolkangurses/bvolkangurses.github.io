@@ -2,22 +2,152 @@
 layout: page
 permalink: /software/
 title: Software
-description: Interactive animations, games, and open-source contributions
+description: Interactive simulations, tools and open-source contributions
 nav: true
-nav_order: 6
+nav_order: 5
 ---
 
 <!-- _pages/software.md -->
 
+<script>
+// GitHub API functions for live stats
+async function fetchGitHubStats(owner, repo) {
+  try {
+    const response = await fetch(`https://api.github.com/repos/${owner}/${repo}`);
+    if (response.ok) {
+      const data = await response.json();
+      return {
+        stars: data.stargazers_count,
+        forks: data.forks_count
+      };
+    }
+  } catch (error) {
+    console.warn(`Failed to fetch stats for ${owner}/${repo}:`, error);
+  }
+  return null;
+}
+
+function formatNumber(num) {
+  if (num >= 1000) {
+    return (num / 1000).toFixed(1) + 'k';
+  }
+  return num.toString();
+}
+
+async function updateGitHubStats() {
+  const repos = [
+    { owner: 'tensorflow', repo: 'tensorflow', cardId: 'tensorflow-card' },
+    { owner: 'pytorch', repo: 'pytorch', cardId: 'pytorch-card' },
+    { owner: 'qiskit', repo: 'qiskit', cardId: 'qiskit-card' },
+    { owner: 'PennyLaneAI', repo: 'pennylane', cardId: 'pennylane-card' },
+    { owner: 'qutip', repo: 'qutip', cardId: 'qutip-card' }
+  ];
+
+  // Fetch all repo stats
+  const statsPromises = repos.map(async (repo) => {
+    const stats = await fetchGitHubStats(repo.owner, repo.repo);
+    return { ...repo, stats };
+  });
+
+  const repoData = await Promise.all(statsPromises);
+  
+  // Sort by stars (descending)
+  repoData.sort((a, b) => {
+    const starsA = a.stats ? a.stats.stars : 0;
+    const starsB = b.stats ? b.stats.stars : 0;
+    return starsB - starsA;
+  });
+
+  // Update stats and reorder cards
+  const container = document.querySelector('#opensource-container');
+  if (container) {
+    repoData.forEach((repo, index) => {
+      const card = document.getElementById(repo.cardId);
+      if (card && repo.stats) {
+        // Update stats
+        const starsBadge = card.querySelector('.stars-count');
+        const forksBadge = card.querySelector('.forks-count');
+        
+        if (starsBadge) starsBadge.textContent = formatNumber(repo.stats.stars);
+        if (forksBadge) forksBadge.textContent = formatNumber(repo.stats.forks);
+        
+        // Reorder card
+        container.appendChild(card);
+      }
+    });
+  }
+}
+
+// Update stats when page loads
+document.addEventListener('DOMContentLoaded', updateGitHubStats);
+</script>
+
+<style>
+.github-stats .badge .stars-count,
+.github-stats .badge .forks-count {
+  color: var(--global-bg-color);
+  font-weight: normal;
+}
+
+/* Improve spacing and alignment for open source cards */
+#opensource-container .software-icon {
+  margin-right: 1rem;
+}
+
+#opensource-container .github-stats {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+#opensource-container .github-stats .badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  white-space: nowrap;
+}
+
+#opensource-container .card-title {
+  margin-bottom: 0.25rem;
+}
+
+#opensource-container .d-flex.align-items-start {
+  margin-bottom: 1rem;
+}
+
+/* Improve vertical spacing between cards */
+#opensource-container .col {
+  margin-bottom: 1.5rem;
+}
+
+#opensource-container .software-card {
+  margin-bottom: 0;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+#opensource-container .software-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Better card internal spacing */
+#opensource-container .card-body {
+  padding: 1.5rem;
+}
+
+#opensource-container .card-text {
+  margin-bottom: 1rem;
+  line-height: 1.5;
+}
+</style>
+
 <div class="software">
 
-  <!-- Interactive Animations Section -->
+  <!-- Simulations and Animations -->
   <div class="section-header">
-    <h3>Interactive Animations</h3>
-    <p class="text-muted">Physics simulations and interactive visualizations</p>
-  </div>
-
-  <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 mb-5">
+    <h3>Simulations and Animations</h3>
+    <p class="text-muted">Physics simulations and interactive animations</p>
+  </div>  <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 mb-5">
     
     <!-- Example Animation Project -->
     <div class="col">
@@ -44,15 +174,16 @@ nav_order: 6
     
   </div>
 
-  <!-- Games Section -->
+    <!-- Tools and Demos -->
   <div class="section-header">
-    <h3>Games</h3>
-    <p class="text-muted">Interactive games and puzzles</p>
+    <h3>Tools and Demos</h3>
+    <p class="text-muted">Interactive tools and demonstrations</p>
   </div>
 
   <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 mb-5">
     
     <!-- Example Game Project -->
+    <!--
     <div class="col">
       <div class="card software-card h-100">
         <div class="card-body d-flex flex-column">
@@ -72,6 +203,34 @@ nav_order: 6
         </div>
       </div>
     </div>
+    -->
+
+    <!-- Photonic Circuit Designer -->
+    <div class="col">
+      <div class="card software-card h-100">
+        <div class="card-body d-flex flex-column">
+          <div class="software-icon mb-3 text-center">
+            <i class="fas fa-microchip fa-3x"></i>
+          </div>
+          <h5 class="card-title">Photonic Circuit Designer</h5>
+          <p class="card-text flex-grow-1">Advanced web-based tool for designing and simulating integrated photonic circuits with real-time performance analysis.</p>
+          <div class="tech-stack mb-3">
+            <span class="badge bg-primary me-1">JavaScript</span>
+            <span class="badge bg-success me-1">WebGL</span>
+            <span class="badge bg-info me-1">Three.js</span>
+            <span class="badge bg-warning text-dark">Python</span>
+          </div>
+          <div class="mt-auto">
+            <a href="#" class="btn software-btn me-2">
+              <i class="fas fa-external-link-alt"></i> Launch
+            </a>
+            <a href="#" class="btn software-btn-outline">
+              <i class="fab fa-github"></i> Code
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <!-- Add more game projects here -->
     
@@ -83,10 +242,10 @@ nav_order: 6
     <p class="text-muted">GitHub repositories and community contributions</p>
   </div>
 
-  <div class="row row-cols-1 row-cols-md-2 g-4 mb-5">
+  <div id="opensource-container" class="row row-cols-1 row-cols-md-2 g-4 mb-5">
     
-    <!-- Example Open Source Project -->
-    <div class="col">
+    <!-- TensorFlow -->
+    <div id="tensorflow-card" class="col">
       <div class="card software-card h-100">
         <div class="card-body d-flex flex-column">
           <div class="d-flex align-items-start mb-3">
@@ -94,25 +253,146 @@ nav_order: 6
               <i class="fab fa-github fa-2x"></i>
             </div>
             <div class="flex-grow-1">
-              <h5 class="card-title mb-1">quantum-simulator</h5>
+              <h5 class="card-title mb-1">tensorflow</h5>
+              <p class="text-muted small mb-0">Python • Machine Learning</p>
+            </div>
+            <div class="github-stats">
+              <span class="badge bg-secondary me-1">
+                <i class="fas fa-star"></i> <span class="stars-count">185k</span>
+              </span>
+              <span class="badge bg-secondary">
+                <i class="fas fa-code-branch"></i> <span class="forks-count">74k</span>
+              </span>
+            </div>
+          </div>
+          <p class="card-text flex-grow-1">Open source platform for machine learning with comprehensive tools, libraries and community resources.</p>
+          <div class="mt-auto">
+            <a href="https://github.com/tensorflow/tensorflow" class="btn software-btn">
+              <i class="fab fa-github"></i> Repository
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PyTorch -->
+    <div id="pytorch-card" class="col">
+      <div class="card software-card h-100">
+        <div class="card-body d-flex flex-column">
+          <div class="d-flex align-items-start mb-3">
+            <div class="software-icon me-3">
+              <i class="fab fa-github fa-2x"></i>
+            </div>
+            <div class="flex-grow-1">
+              <h5 class="card-title mb-1">pytorch</h5>
+              <p class="text-muted small mb-0">Python • Machine Learning</p>
+            </div>
+            <div class="github-stats">
+              <span class="badge bg-secondary me-1">
+                <i class="fas fa-star"></i> <span class="stars-count">82k</span>
+              </span>
+              <span class="badge bg-secondary">
+                <i class="fas fa-code-branch"></i> <span class="forks-count">22k</span>
+              </span>
+            </div>
+          </div>
+          <p class="card-text flex-grow-1">Open source machine learning framework that accelerates the path from research prototyping to production deployment.</p>
+          <div class="mt-auto">
+            <a href="https://github.com/pytorch/pytorch" class="btn software-btn">
+              <i class="fab fa-github"></i> Repository
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Qiskit -->
+    <div id="qiskit-card" class="col">
+      <div class="card software-card h-100">
+        <div class="card-body d-flex flex-column">
+          <div class="d-flex align-items-start mb-3">
+            <div class="software-icon me-3">
+              <i class="fab fa-github fa-2x"></i>
+            </div>
+            <div class="flex-grow-1">
+              <h5 class="card-title mb-1">qiskit</h5>
               <p class="text-muted small mb-0">Python • Quantum Computing</p>
             </div>
             <div class="github-stats">
               <span class="badge bg-secondary me-1">
-                <i class="fas fa-star"></i> 42
+                <i class="fas fa-star"></i> <span class="stars-count">5.1k</span>
               </span>
               <span class="badge bg-secondary">
-                <i class="fas fa-code-branch"></i> 8
+                <i class="fas fa-code-branch"></i> <span class="forks-count">2.3k</span>
               </span>
             </div>
           </div>
-          <p class="card-text flex-grow-1">Open-source quantum circuit simulator with visualization capabilities for educational purposes.</p>
+          <p class="card-text flex-grow-1">Open-source SDK for working with quantum computers at the level of pulses, circuits and application modules.</p>
           <div class="mt-auto">
-            <a href="#" class="btn software-btn me-2">
+            <a href="https://github.com/qiskit/qiskit" class="btn software-btn">
               <i class="fab fa-github"></i> Repository
             </a>
-            <a href="#" class="btn software-btn-outline">
-              <i class="fas fa-book"></i> Docs
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PennyLane -->
+    <div id="pennylane-card" class="col">
+      <div class="card software-card h-100">
+        <div class="card-body d-flex flex-column">
+          <div class="d-flex align-items-start mb-3">
+            <div class="software-icon me-3">
+              <i class="fab fa-github fa-2x"></i>
+            </div>
+            <div class="flex-grow-1">
+              <h5 class="card-title mb-1">pennylane</h5>
+              <p class="text-muted small mb-0">Python • Quantum Machine Learning</p>
+            </div>
+            <div class="github-stats">
+              <span class="badge bg-secondary me-1">
+                <i class="fas fa-star"></i> <span class="stars-count">2.3k</span>
+              </span>
+              <span class="badge bg-secondary">
+                <i class="fas fa-code-branch"></i> <span class="forks-count">600+</span>
+              </span>
+            </div>
+          </div>
+          <p class="card-text flex-grow-1">Cross-platform Python library for differentiable programming of quantum computers and quantum machine learning.</p>
+          <div class="mt-auto">
+            <a href="https://github.com/PennyLaneAI/pennylane" class="btn software-btn">
+              <i class="fab fa-github"></i> Repository
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- QuTiP -->
+    <div id="qutip-card" class="col">
+      <div class="card software-card h-100">
+        <div class="card-body d-flex flex-column">
+          <div class="d-flex align-items-start mb-3">
+            <div class="software-icon me-3">
+              <i class="fab fa-github fa-2x"></i>
+            </div>
+            <div class="flex-grow-1">
+              <h5 class="card-title mb-1">qutip</h5>
+              <p class="text-muted small mb-0">Python • Quantum Computing</p>
+            </div>
+            <div class="github-stats">
+              <span class="badge bg-secondary me-1">
+                <i class="fas fa-star"></i> <span class="stars-count">1.9k</span>
+              </span>
+              <span class="badge bg-secondary">
+                <i class="fas fa-code-branch"></i> <span class="forks-count">500+</span>
+              </span>
+            </div>
+          </div>
+          <p class="card-text flex-grow-1">QuTiP - Quantum Toolbox in Python. A library for the numerical simulation of open quantum systems.</p>
+          <div class="mt-auto">
+            <a href="https://github.com/qutip/qutip" class="btn software-btn">
+              <i class="fab fa-github"></i> Repository
             </a>
           </div>
         </div>
@@ -121,46 +401,6 @@ nav_order: 6
 
     <!-- Add more open source projects here -->
     
-  </div>
-
-  <!-- Featured Software -->
-  <div class="section-header">
-    <h3>Featured Software</h3>
-    <p class="text-muted">Highlighted projects and tools</p>
-  </div>
-
-  <div class="row mb-5">
-    <div class="col-12">
-      <div class="card software-featured">
-        <div class="card-body">
-          <div class="row align-items-center">
-            <div class="col-md-2 text-center">
-              <div class="software-icon-large">
-                <i class="fas fa-microchip fa-4x"></i>
-              </div>
-            </div>
-            <div class="col-md-7">
-              <h4 class="card-title">Photonic Circuit Designer</h4>
-              <p class="card-text">Advanced web-based tool for designing and simulating integrated photonic circuits with real-time performance analysis and optimization suggestions.</p>
-              <div class="tech-stack">
-                <span class="badge bg-primary me-1">JavaScript</span>
-                <span class="badge bg-success me-1">WebGL</span>
-                <span class="badge bg-info me-1">Three.js</span>
-                <span class="badge bg-warning text-dark">Python Backend</span>
-              </div>
-            </div>
-            <div class="col-md-3 text-end">
-              <a href="#" class="btn software-btn-lg mb-2 d-block">
-                <i class="fas fa-external-link-alt"></i> Launch App
-              </a>
-              <a href="#" class="btn software-btn-outline">
-                <i class="fab fa-github"></i> Source Code
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
   </div>
 
 </div>
