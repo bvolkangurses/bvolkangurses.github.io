@@ -139,7 +139,7 @@
             document.addEventListener('keydown', handleKeyPress);
 
             // Optional: Remove event listener when navigating away (cleanup)
-            window.addEventListener('beforeunload', function() {
+            window.addEventListener('beforeunload', function () {
               document.removeEventListener('keydown', handleKeyPress);
             });
           })
