@@ -6,70 +6,61 @@
     <title>Wavefunction Simulation</title>
     <script>
       // Security: Check if accessed from authorized domain
-      (function() {
-        const allowedDomains = [
-          'volkangurses.com',
-          'bvolkangurses.github.io',
-          'localhost',
-          '127.0.0.1'
-        ];
-        
+      (function () {
+        const allowedDomains = ["volkangurses.com", "bvolkangurses.github.io", "localhost", "127.0.0.1"];
+
         const currentDomain = window.location.hostname;
         const referrer = document.referrer;
-        
+
         // Check if current domain is allowed
-        const isAllowedDomain = allowedDomains.some(domain => 
-          currentDomain.includes(domain)
-        );
-        
+        const isAllowedDomain = allowedDomains.some((domain) => currentDomain.includes(domain));
+
         // Check if accessed directly (no referrer from same domain)
-        const hasValidReferrer = referrer && allowedDomains.some(domain => 
-          referrer.includes(domain)
-        );
-        
+        const hasValidReferrer = referrer && allowedDomains.some((domain) => referrer.includes(domain));
+
         // If accessed directly via URL manipulation, redirect to software page
-        if (isAllowedDomain && !hasValidReferrer && !sessionStorage.getItem('auth_sim')) {
-          window.location.href = '/software/';
+        if (isAllowedDomain && !hasValidReferrer && !sessionStorage.getItem("auth_sim")) {
+          window.location.href = "/software/";
         }
-        
+
         // If not from allowed domain at all, redirect to home
         if (!isAllowedDomain) {
-          window.location.href = '/';
+          window.location.href = "/";
         }
       })();
     </script>
     <script>
       // Detect theme from parent page or system preference
-      (function() {
+      (function () {
         let isDark = false;
-        
+
         // Try to detect parent page theme
         try {
           if (window.parent && window.parent.document) {
             const parentHtml = window.parent.document.documentElement;
-            isDark = parentHtml.getAttribute('data-theme') === 'dark';
+            isDark = parentHtml.getAttribute("data-theme") === "dark";
           }
         } catch (e) {
           // If we can't access parent, use system preference
-          isDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+          isDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
         }
-        
+
         // Set theme attribute
-        document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
-        
+        document.documentElement.setAttribute("data-theme", isDark ? "dark" : "light");
+
         // Listen for theme changes in parent
         try {
           if (window.parent && window.parent.document) {
             const observer = new MutationObserver(() => {
               const parentHtml = window.parent.document.documentElement;
-              const parentTheme = parentHtml.getAttribute('data-theme');
+              const parentTheme = parentHtml.getAttribute("data-theme");
               if (parentTheme) {
-                document.documentElement.setAttribute('data-theme', parentTheme);
+                document.documentElement.setAttribute("data-theme", parentTheme);
               }
             });
             observer.observe(window.parent.document.documentElement, {
               attributes: true,
-              attributeFilter: ['data-theme']
+              attributeFilter: ["data-theme"],
             });
           }
         } catch (e) {
@@ -101,7 +92,10 @@
       }
 
       * {
-        transition: background-color 0.3s ease, color 0.1s ease, border-color 0.3s ease;
+        transition:
+          background-color 0.3s ease,
+          color 0.1s ease,
+          border-color 0.3s ease;
       }
 
       body {
@@ -165,7 +159,10 @@
         cursor: pointer;
         font-weight: bold;
         font-size: 12px;
-        transition: background 0.2s ease, border-color 0.2s ease, opacity 0.2s ease;
+        transition:
+          background 0.2s ease,
+          border-color 0.2s ease,
+          opacity 0.2s ease;
       }
 
       button:hover {
