@@ -1,0 +1,45 @@
+FROM ruby:3.0
+
+ENV DEBIAN_FRONTEND noninteractive
+
+# Install system dependencies including ImageMagick
+RUN apt-get update -y && \
+    apt-get install -y --no-install-recommends \
+        build-essential \
+        curl \
+        imagemagick \
+        inotify-tools \
+        locales \
+        nodejs \
+        npm && \
+    apt-get clean && \
+    apt-get autoremove && \
+    rm -rf /var/lib/apt/lists/*
+
+# Configure locale
+RUN sed -i '/en_US.UTF-8/s/^# //g' /etc/locale.gen && \
+    locale-gen
+
+# Set up working directory
+RUN mkdir /srv/jekyll
+WORKDIR /srv/jekyll
+
+# Copy Gemfile and install gems
+ADD Gemfile /srv/jekyll
+ADD Gemfile.lock /srv/jekyll
+RUN gem install --no-document jekyll bundler
+RUN bundle install --no-cache
+
+# Copy entry point
+COPY bin/entry_point.sh /tmp/entry_point.sh
+RUN chmod +x /tmp/entry_point.sh
+
+# Expose port
+EXPOSE 4000
+
+# Set environment variables
+ENV LC_ALL=en_US.UTF-8
+ENV LANG=en_US.UTF-8
+ENV LANGUAGE=en_US.UTF-8
+
+CMD ["/tmp/entry_point.sh"]

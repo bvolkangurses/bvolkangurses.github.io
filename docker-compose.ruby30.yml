@@ -1,0 +1,11 @@
+services:
+  jekyll:
+    build:
+      context: .
+      dockerfile: Dockerfile.ruby30
+    ports:
+      - "4000:4000"
+    volumes:
+      - ".:/srv/jekyll:Z"
+    environment:
+      - JEKYLL_ENV=development
