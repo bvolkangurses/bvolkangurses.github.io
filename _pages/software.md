@@ -308,6 +308,42 @@ document.addEventListener('DOMContentLoaded', updateGitHubStats);
       </div>
     </div>
 
+    <!-- The Guide -->
+    <div class="col">
+      <div class="card software-card h-100">
+        <div class="card-body d-flex flex-column">
+          <div class="software-icon mb-3 text-center">
+            <i class="fas fa-book-reader fa-3x"></i>
+          </div>
+          <h5 class="card-title">The Guide</h5>
+          <p class="card-text flex-grow-1">Interactive, multi-modal book reader that allows you to chat with the author through text and audio.</p>
+          <div class="mt-auto">
+            <a href="https://github.com/bvolkangurses/theguide" class="btn software-btn-outline">
+              <i class="fab fa-github"></i> Code
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- WAIrren Buffett -->
+    <div class="col">
+      <div class="card software-card h-100">
+        <div class="card-body d-flex flex-column">
+          <div class="software-icon mb-3 text-center">
+            <i class="fas fa-chart-line fa-3x"></i>
+          </div>
+          <h5 class="card-title">WAIrren Buffett</h5>
+          <p class="card-text flex-grow-1">AI-assisted financial planner and investor that provides personalized stock picks and financial projections.</p>
+          <div class="mt-auto">
+            <a href="https://github.com/bvolkangurses/wairrenbuffett" class="btn software-btn-outline">
+              <i class="fab fa-github"></i> Code
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- Add more game projects here -->
 
   </div>
