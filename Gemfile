@@ -1,4 +1,8 @@
 source 'https://rubygems.org'
+
+# Add observer gem for Ruby 3.4+ compatibility
+gem 'observer'
+
 group :jekyll_plugins do
     gem 'classifier-reborn'
     gem 'jekyll'
