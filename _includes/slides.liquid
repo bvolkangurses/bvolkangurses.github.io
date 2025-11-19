@@ -19,7 +19,9 @@
           <button id="prev-btn-{{ page.slides | replace: '.', '-' | replace: '/', '-' }}" class="control-btn">
             <i class="fa-solid fa-chevron-left"></i>
           </button>
-          <span id="page-info-{{ page.slides | replace: '.', '-' | replace: '/', '-' }}" class="page-info mx-3">Page 1 of 1</span>
+          <div id="page-info-{{ page.slides | replace: '.', '-' | replace: '/', '-' }}" class="page-info mx-3">
+            Page <input type="number" id="page-input-{{ page.slides | replace: '.', '-' | replace: '/', '-' }}" class="page-input" value="1" min="1" max="1"> of <span id="total-pages-{{ page.slides | replace: '.', '-' | replace: '/', '-' }}">1</span>
+          </div>
           <button id="next-btn-{{ page.slides | replace: '.', '-' | replace: '/', '-' }}" class="control-btn">
             <i class="fa-solid fa-chevron-right"></i>
           </button>
@@ -72,7 +74,9 @@
             });
           });
 
-          document.getElementById('page-info-' + uniqueId).textContent = 'Page ' + num + ' of ' + pdfDoc.numPages;
+          document.getElementById('page-input-' + uniqueId).value = num;
+          document.getElementById('total-pages-' + uniqueId).textContent = pdfDoc.numPages;
+          document.getElementById('page-input-' + uniqueId).max = pdfDoc.numPages;
 
           // Update progress bar
           const progress = ((num - 1) / (pdfDoc.numPages - 1)) * 100;
@@ -117,6 +121,31 @@
               if (pageNum >= pdfDoc.numPages) return;
               pageNum++;
               queueRenderPage(pageNum);
+            });
+
+            // Set up page input navigation
+            document.getElementById('page-input-' + uniqueId).addEventListener('keypress', function (event) {
+              if (event.key === 'Enter') {
+                const inputValue = parseInt(this.value);
+                if (inputValue && inputValue >= 1 && inputValue <= pdfDoc.numPages) {
+                  pageNum = inputValue;
+                  queueRenderPage(pageNum);
+                } else {
+                  // Reset to current page if invalid input
+                  this.value = pageNum;
+                }
+              }
+            });
+
+            document.getElementById('page-input-' + uniqueId).addEventListener('blur', function () {
+              const inputValue = parseInt(this.value);
+              if (inputValue && inputValue >= 1 && inputValue <= pdfDoc.numPages) {
+                pageNum = inputValue;
+                queueRenderPage(pageNum);
+              } else {
+                // Reset to current page if invalid input
+                this.value = pageNum;
+              }
             });
 
             // Set up keyboard navigation
@@ -273,6 +302,31 @@
       font-size: 0.9rem;
       color: var(--global-text-color);
       min-width: 120px;
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+    }
+
+    .page-input {
+      width: 50px;
+      text-align: center;
+      border: 1px solid var(--global-divider-color);
+      border-radius: 4px;
+      padding: 2px 4px;
+      font-size: 0.9rem;
+      background: var(--global-bg-color);
+      color: var(--global-text-color);
+      transition: border-color 0.2s ease;
+    }
+
+    .page-input:focus {
+      outline: none;
+      border-color: var(--global-theme-color);
+      box-shadow: 0 0 0 2px rgba(var(--global-theme-color), 0.2);
+    }
+
+    .page-input:hover {
+      border-color: var(--global-theme-color);
     }
 
     .control-btn {
