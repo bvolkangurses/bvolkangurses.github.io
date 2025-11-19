@@ -104,6 +104,7 @@ document.addEventListener('DOMContentLoaded', updateGitHubStats);
   display: flex;
   gap: 0.5rem;
   align-items: center;
+  flex-shrink: 0;
 }
 
 #opensource-container .github-stats .badge {
@@ -119,6 +120,10 @@ document.addEventListener('DOMContentLoaded', updateGitHubStats);
 
 #opensource-container .d-flex.align-items-start {
   margin-bottom: 1rem;
+}
+
+#opensource-container .text-muted.small {
+  white-space: nowrap;
 }
 
 /* Improve vertical spacing between cards - apply to all sections */
@@ -274,9 +279,6 @@ document.addEventListener('DOMContentLoaded', updateGitHubStats);
             <span class="badge bg-warning text-dark">Python</span>
           </div>
           <div class="mt-auto">
-            <a href="https://bvolkangurses.github.io/picdesigner/" class="btn software-btn me-2">
-              <i class="fas fa-external-link-alt"></i> Launch
-            </a>
             <a href="https://github.com/bvolkangurses/picdesigner" class="btn software-btn-outline">
               <i class="fab fa-github"></i> Code
             </a>

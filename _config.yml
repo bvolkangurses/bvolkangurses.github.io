@@ -294,7 +294,7 @@ jekyll-archives:
     tag: "/blog/tag/:name/"
     category: "/blog/category/:name/"
 
-display_tags: ["physics", "math", "technology", "engineering", "future", "42"] # these tags will be displayed on the front page of your blog
+display_tags: ["physics", "math", "technology", "engineering", "future", "economics"] # these tags will be displayed on the front page of your blog
 display_categories: # these categories will be displayed on the front page of your blog
 
 # -----------------------------------------------------------------------------
