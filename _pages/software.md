@@ -89,6 +89,12 @@ document.addEventListener('DOMContentLoaded', updateGitHubStats);
   font-weight: normal;
 }
 
+/* Make badge backgrounds theme-aware */
+.github-stats .badge {
+  background-color: var(--global-text-color) !important;
+  color: var(--global-bg-color) !important;
+}
+
 /* Improve spacing and alignment for open source cards */
 #opensource-container .software-icon {
   margin-right: 1rem;
@@ -149,42 +155,6 @@ document.addEventListener('DOMContentLoaded', updateGitHubStats);
 .software .software-icon {
   margin-bottom: 1rem;
 }
-
-/* Force consistent card heights and structure */
-.software .software-card {
-  min-height: 320px;
-}
-
-.software .card-body {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  min-height: 280px;
-}
-
-/* Normalize different content layouts */
-.software .card-text {
-  flex-grow: 1;
-  display: flex;
-  align-items: flex-start;
-}
-
-/* Ensure buttons always align at bottom */
-.software .mt-auto {
-  margin-top: auto !important;
-  padding-top: 1rem;
-}
-
-/* Consistent tech stack spacing */
-.software .tech-stack {
-  margin: 0.75rem 0;
-}
-
-/* Normalize open source cards to match others */
-#opensource-container .d-flex.align-items-start {
-  min-height: 80px;
-  margin-bottom: 0.75rem;
-}
 </style>
 
 <div class="software">
@@ -193,7 +163,7 @@ document.addEventListener('DOMContentLoaded', updateGitHubStats);
   <div class="section-header">
     <h3>Simulations and Animations</h3>
     <p class="text-muted">Physics simulations and interactive animations</p>
-  </div>  <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 mb-5">
+  </div>  <div class="row row-cols-1 row-cols-md-2 g-4 mb-5">
     
     <!-- Wave Function Simulation -->
     <div class="col">
@@ -205,8 +175,8 @@ document.addEventListener('DOMContentLoaded', updateGitHubStats);
           <h5 class="card-title">Wavefunction Simulation</h5>
           <p class="card-text flex-grow-1">Interactive wavefunction simulation with real-time visualization of wave propagation and interference patterns.</p>
           <div class="mt-auto">
-            <a href="https://bvolkangurses.github.io/wavefunctionsim/" class="btn software-btn me-2">
-              <i class="fas fa-external-link-alt"></i> Launch
+            <a href="/assets/html/wavefunctionsim.html" class="btn software-btn me-2">
+              <i class="fas fa-play"></i> Launch
             </a>
             <a href="https://github.com/bvolkangurses/wavefunctionsim" class="btn software-btn-outline">
               <i class="fab fa-github"></i> Code
@@ -226,7 +196,7 @@ document.addEventListener('DOMContentLoaded', updateGitHubStats);
     <p class="text-muted">Interactive tools and demonstrations</p>
   </div>
 
-  <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 mb-5">
+  <div class="row row-cols-1 row-cols-md-2 g-4 mb-5">
     
     <!-- Example Game Project -->
     <!--
@@ -267,10 +237,10 @@ document.addEventListener('DOMContentLoaded', updateGitHubStats);
             <span class="badge bg-warning text-dark">Python</span>
           </div>
           <div class="mt-auto">
-            <a href="https://bvolkangurses.github.io/matterware/" class="btn software-btn me-2">
+            <a href="https://bvolkangurses.github.io/picdesigner/" class="btn software-btn me-2">
               <i class="fas fa-external-link-alt"></i> Launch
             </a>
-            <a href="https://github.com/bvolkangurses/matterware" class="btn software-btn-outline">
+            <a href="https://github.com/bvolkangurses/picdesigner" class="btn software-btn-outline">
               <i class="fab fa-github"></i> Code
             </a>
           </div>
