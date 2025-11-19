@@ -4,7 +4,7 @@ title: Fundamental physical limits of technologies
 date: 2025-09-20
 description: why we should study the fundamental physical limits of technologies
 tags: physics, technology, engineering, future
-categories: 
+categories:
 giscus_comments: false
 related_posts: false
 related_publications: true

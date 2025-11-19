@@ -1,726 +1,726 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Wavefunction Simulation</title>
     <style>
-        body {
-            margin: 0;
-            padding: 20px;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: #1a1a1a;
-            color: #ffffff;
-            overflow-x: hidden;
-        }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        
-        h1 {
-            text-align: center;
-            margin-bottom: 10px;
-            color: #f0f0f0;
-        }
-        
-        .subtitle {
-            text-align: center;
-            margin-bottom: 30px;
-            color: #888;
-            font-size: 14px;
-        }
-        
-        .controls {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 15px;
-            margin-bottom: 20px;
-            justify-content: center;
-            align-items: center;
-        }
-        
-        .control-group {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        label {
-            font-size: 12px;
-            color: #ccc;
-            min-width: 80px;
-        }
-        
-        input[type="range"] {
-            width: 100px;
-        }
-        
-        button {
-            background: #444;
-            color: #fff;
-            border: 1px solid #666;
-            padding: 8px 16px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-weight: bold;
-            font-size: 12px;
-        }
-        
-        button:hover {
-            background: #555;
-            border-color: #777;
-        }
-        
-        button:disabled {
-            background: #555;
-            color: #888;
-            cursor: not-allowed;
-        }
-        
-        #canvas {
-            border: 1px solid #555;
-            display: block;
-            margin: 0 auto;
-            background: #000;
-        }
-        
-        .info {
-            margin-top: 20px;
-            padding: 15px;
-            background: #1a1a1a;
-            border-radius: 8px;
-            font-size: 12px;
-            line-height: 1.5;
-        }
-        
-        .particle-info {
-            display: flex;
-            justify-content: space-around;
-            margin-top: 10px;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-        
-        .particle {
-            background: #2a2a2a;
-            padding: 8px;
-            border-radius: 4px;
-            min-width: 120px;
-        }
-        
-        .particle-color {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            display: inline-block;
-            margin-right: 8px;
-        }
+      body {
+        margin: 0;
+        padding: 20px;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        background: #1a1a1a;
+        color: #ffffff;
+        overflow-x: hidden;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      h1 {
+        text-align: center;
+        margin-bottom: 10px;
+        color: #f0f0f0;
+      }
+
+      .subtitle {
+        text-align: center;
+        margin-bottom: 30px;
+        color: #888;
+        font-size: 14px;
+      }
+
+      .controls {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 15px;
+        margin-bottom: 20px;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .control-group {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      label {
+        font-size: 12px;
+        color: #ccc;
+        min-width: 80px;
+      }
+
+      input[type="range"] {
+        width: 100px;
+      }
+
+      button {
+        background: #444;
+        color: #fff;
+        border: 1px solid #666;
+        padding: 8px 16px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-weight: bold;
+        font-size: 12px;
+      }
+
+      button:hover {
+        background: #555;
+        border-color: #777;
+      }
+
+      button:disabled {
+        background: #555;
+        color: #888;
+        cursor: not-allowed;
+      }
+
+      #canvas {
+        border: 1px solid #555;
+        display: block;
+        margin: 0 auto;
+        background: #000;
+      }
+
+      .info {
+        margin-top: 20px;
+        padding: 15px;
+        background: #1a1a1a;
+        border-radius: 8px;
+        font-size: 12px;
+        line-height: 1.5;
+      }
+
+      .particle-info {
+        display: flex;
+        justify-content: space-around;
+        margin-top: 10px;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+
+      .particle {
+        background: #2a2a2a;
+        padding: 8px;
+        border-radius: 4px;
+        min-width: 120px;
+      }
+
+      .particle-color {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        display: inline-block;
+        margin-right: 8px;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <div class="container">
-        <h1>Wavefunction Simulation</h1>
-        <p class="subtitle">Real-time visualization of wavefunction evolution and Hamiltonian dynamics</p>
-        
-        <div class="controls">
-            <div class="control-group">
-                <label>Time Step:</label>
-                <input type="range" id="timeStep" min="1" max="1000" value="10">
-                <span id="timeStepValue">0.01</span>
-            </div>
-            
-            <div class="control-group">
-                <label>Coupling:</label>
-                <input type="range" id="coupling" min="0" max="100" value="30">
-                <span id="couplingValue">0.3</span>
-            </div>
-            
-            <button id="clearBtn">Clear All</button>
-            <button id="pauseBtn">Pause</button>
+      <h1>Wavefunction Simulation</h1>
+      <p class="subtitle">Real-time visualization of wavefunction evolution and Hamiltonian dynamics</p>
+
+      <div class="controls">
+        <div class="control-group">
+          <label>Time Step:</label>
+          <input type="range" id="timeStep" min="1" max="1000" value="10" />
+          <span id="timeStepValue">0.01</span>
         </div>
-        
-        <div style="text-align: center; margin-bottom: 10px; font-size: 14px; color: #ccc;">
-            <strong>Click to initialize quantum wavepackets</strong>
+
+        <div class="control-group">
+          <label>Coupling:</label>
+          <input type="range" id="coupling" min="0" max="100" value="30" />
+          <span id="couplingValue">0.3</span>
         </div>
-        
-        <canvas id="canvas" width="800" height="400"></canvas>
-        
-        <div class="info">
-            <div class="particle-info" id="particleInfo">
-                <!-- Particle info will be populated by JavaScript -->
-            </div>
+
+        <button id="clearBtn">Clear All</button>
+        <button id="pauseBtn">Pause</button>
+      </div>
+
+      <div style="text-align: center; margin-bottom: 10px; font-size: 14px; color: #ccc">
+        <strong>Click to initialize quantum wavepackets</strong>
+      </div>
+
+      <canvas id="canvas" width="800" height="400"></canvas>
+
+      <div class="info">
+        <div class="particle-info" id="particleInfo">
+          <!-- Particle info will be populated by JavaScript -->
         </div>
+      </div>
     </div>
 
     <script>
-        class WavefunctionSimulation {
-            constructor() {
-                this.canvas = document.getElementById('canvas');
-                this.ctx = this.canvas.getContext('2d');
-                this.width = this.canvas.width;
-                this.height = this.canvas.height;
-                
-                this.particles = [];
-                this.time = 0;
-                this.dt = 0.01;
-                this.isRunning = true;
-                
-                this.gridSize = 200;
-                this.wavefunction = new Array(this.gridSize).fill(null).map(() => new Array(this.gridSize).fill({re: 0, im: 0}));
-                
-                this.setupControls();
-                this.initializeParticles();
-                this.animate();
-            }
-            
-            setupControls() {
-                const timeStepSlider = document.getElementById('timeStep');
-                const couplingSlider = document.getElementById('coupling');
-                const clearBtn = document.getElementById('clearBtn');
-                const pauseBtn = document.getElementById('pauseBtn');
-                
-                timeStepSlider.addEventListener('input', (e) => {
-                    const val = (e.target.value / 1000).toFixed(3);
-                    document.getElementById('timeStepValue').textContent = val;
-                    this.dt = parseFloat(val);
-                });
-                
-                couplingSlider.addEventListener('input', (e) => {
-                    const val = (e.target.value / 100).toFixed(1);
-                    document.getElementById('couplingValue').textContent = val;
-                    this.coupling = parseFloat(val);
-                });
-                
-                clearBtn.addEventListener('click', () => {
-                    this.particles = [];
-                    this.time = 0;
-                    this.updateParticleInfo();
-                });
-                
-                pauseBtn.addEventListener('click', () => {
-                    this.isRunning = !this.isRunning;
-                    pauseBtn.textContent = this.isRunning ? 'Pause' : 'Resume';
-                });
-                
-                // Canvas click handlers
-                this.canvas.addEventListener('click', (e) => {
-                    console.log('Canvas clicked!');
-                    this.addParticle(e);
-                });
-                
-                console.log('Event listeners attached to canvas');
-                
-                this.timeScale = 1.0;
-                this.coupling = 0.3;
-                this.nextParticleColor = 0;
-            }
-            
-            initializeParticles() {
-                // Start with no particles - user will click to add them
-                this.particles = [];
-                this.updateParticleInfo();
-            }
-            
-            addParticle(event) {
-                console.log('Adding particle');
-                const rect = this.canvas.getBoundingClientRect();
-                const x = ((event.clientX - rect.left) / rect.width) * 2 - 1; // Convert to [-1,1]
-                const y = ((event.clientY - rect.top) / rect.height) * 2 - 1;
-                
-                console.log('Mouse position:', event.clientX - rect.left, event.clientY - rect.top);
-                console.log('Converted position:', x, y);
-                
-                const colors = ['#ff6b9d', '#4ecdc4', '#45b7d1', '#96ceb4', '#ffa726', '#ab47bc', '#26c6da', '#66bb6a'];
-                const color = colors[this.nextParticleColor % colors.length];
-                this.nextParticleColor++;
-                
-                // Generate random initial momentum
-                const kx = (Math.random() - 0.5) * 20;
-                const ky = (Math.random() - 0.5) * 20;
-                
-                const newParticle = {
-                    x: x,
-                    y: y,
-                    vx: kx * 0.001, // Convert momentum to velocity
-                    vy: ky * 0.001,
-                    sigma: 0.05, // Wavepacket width - narrower for more coherent packets
-                    kx: kx, // Store momentum for phase calculation
-                    ky: ky,
-                    mass: 1.0,
-                    phase: Math.random() * Math.PI * 2,
-                    color: color,
-                    energy: 0
-                };
-                
-                this.particles.push(newParticle);
-                console.log('Total particles:', this.particles.length);
-                this.updateParticleInfo();
-            }
-            
-            updateParticleInfo() {
-                const infoDiv = document.getElementById('particleInfo');
-                infoDiv.innerHTML = '';
-                
-                // Info panel is empty - focus entirely on wavefunction visualization
-                
-                // No info cards - focus on the wavefunction visualization
-            }
-            
-            evolveWavefunction() {
-                // Clear wavefunction
-                for (let i = 0; i < this.gridSize; i++) {
-                    for (let j = 0; j < this.gridSize; j++) {
-                        this.wavefunction[i][j] = {re: 0, im: 0};
-                    }
-                }
-                
-                // 1. Calculate Forces (Gradient of Potential)
-                let forces = this.particles.map(() => ({x: 0, y: 0}));
-                let potentials = this.particles.map(() => 0);
-                const mass = 1000; // Effective mass for physics scaling
+      class WavefunctionSimulation {
+        constructor() {
+          this.canvas = document.getElementById("canvas");
+          this.ctx = this.canvas.getContext("2d");
+          this.width = this.canvas.width;
+          this.height = this.canvas.height;
 
-                for (let i = 0; i < this.particles.length; i++) {
-                    for (let j = i + 1; j < this.particles.length; j++) {
-                        const p1 = this.particles[i];
-                        const p2 = this.particles[j];
-                        const dx = p2.x - p1.x;
-                        const dy = p2.y - p1.y;
-                        const r2 = dx*dx + dy*dy;
-                        const r = Math.sqrt(r2);
-                        const softR = Math.max(r, 0.1); // Softening parameter
+          this.particles = [];
+          this.time = 0;
+          this.dt = 0.01;
+          this.isRunning = true;
 
-                        if (this.coupling > 0) {
-                            // Force F = -dV/dr = -coupling/r^2 (attractive)
-                            // Vector F = (coupling/r^3) * vec(r)
-                            const forceMag = this.coupling / (softR * softR * softR);
-                            const fx = forceMag * dx;
-                            const fy = forceMag * dy;
-                            
-                            forces[i].x += fx;
-                            forces[i].y += fy;
-                            forces[j].x -= fx;
-                            forces[j].y -= fy;
-                            
-                            const potential = -this.coupling / softR;
-                            potentials[i] += potential / 2;
-                            potentials[j] += potential / 2;
-                        }
-                    }
-                }
+          this.gridSize = 200;
+          this.wavefunction = new Array(this.gridSize).fill(null).map(() => new Array(this.gridSize).fill({ re: 0, im: 0 }));
 
-                // 2. Update Particles (Ehrenfest Theorem / Classical Trajectories)
-                const dt = this.dt * this.timeScale;
-                
-                this.particles.forEach((particle, index) => {
-                    // Update Velocity: v = v + (F/m) * dt
-                    particle.vx += (forces[index].x / mass) * dt;
-                    particle.vy += (forces[index].y / mass) * dt;
-
-                    // Update Position: x = x + v * dt
-                    particle.x += particle.vx * dt;
-                    particle.y += particle.vy * dt;
-
-                    // Reflective Boundary Conditions
-                    if (particle.x > 1) {
-                        particle.x = 1;
-                        particle.vx = -particle.vx;
-                    }
-                    if (particle.x < -1) {
-                        particle.x = -1;
-                        particle.vx = -particle.vx;
-                    }
-                    if (particle.y > 1) {
-                        particle.y = 1;
-                        particle.vy = -particle.vy;
-                    }
-                    if (particle.y < -1) {
-                        particle.y = -1;
-                        particle.vy = -particle.vy;
-                    }
-                    
-                    // Update momentum k based on velocity v (p = mv)
-                    // Scaling factor 1000 matches initialization (vx = kx * 0.001)
-                    particle.kx = particle.vx * 1000;
-                    particle.ky = particle.vy * 1000;
-                    
-                    // 3. Update Quantum Phase
-                    // E = Kinetic + Potential
-                    // Kinetic = p^2/2m = 0.5 * m * v^2
-                    const kineticEnergy = 0.5 * mass * (particle.vx*particle.vx + particle.vy*particle.vy);
-                    particle.energy = kineticEnergy + potentials[index];
-                    
-                    // Phase evolution dφ/dt = -E/hbar (assuming hbar=1)
-                    particle.phase += particle.energy * dt;
-                    
-                    // 4. Generate Wavefunction
-                    const x0 = (particle.x + 1) * this.gridSize / 2; 
-                    const y0 = (particle.y + 1) * this.gridSize / 2;
-                    const sigma = particle.sigma * this.gridSize / 2;
-                    
-                    for (let i = 0; i < this.gridSize; i++) {
-                        for (let j = 0; j < this.gridSize; j++) {
-                            const dx = i - x0;
-                            const dy = j - y0;
-                            const r2 = dx*dx + dy*dy;
-                            
-                            if (r2 < sigma*sigma*9) {
-                                const amplitude = Math.exp(-r2 / (2 * sigma*sigma));
-                                
-                                // Spatial phase: k dot r
-                                // Convert grid dx, dy to simulation units for phase calculation
-                                // Simulation width = 2, Grid width = gridSize
-                                const simDx = dx * (2 / this.gridSize);
-                                const simDy = dy * (2 / this.gridSize);
-                                
-                                const phase = particle.phase + particle.kx * simDx + particle.ky * simDy;
-                                
-                                const re = amplitude * Math.cos(phase);
-                                const im = amplitude * Math.sin(phase);
-                                
-                                this.wavefunction[i][j].re += re;
-                                this.wavefunction[i][j].im += im;
-                            }
-                        }
-                    }
-                });
-                
-                this.updateParticleInfo();
-            }
-            
-            render() {
-                // Clear canvas
-                this.ctx.fillStyle = '#111';
-                this.ctx.fillRect(0, 0, this.width, this.height);
-                
-                const imageData = this.ctx.createImageData(this.width, this.height);
-                const data = imageData.data;
-                
-                const scaleX = this.width / this.gridSize;
-                const scaleY = this.height / this.gridSize;
-                
-                // Render wavefunction
-                for (let i = 0; i < this.gridSize; i++) {
-                    for (let j = 0; j < this.gridSize; j++) {
-                        const psi = this.wavefunction[i][j];
-                        const intensity = Math.sqrt(psi.re * psi.re + psi.im * psi.im);
-                        const phase = Math.atan2(psi.im, psi.re);
-                        
-                        if (intensity > 0.001) {
-                            // Use magma colormap based on intensity (like matplotlib)
-                            const normalizedIntensity = Math.min(intensity * 3, 1); // Scale factor for visibility
-                            const rgb = this.magmaColormap(normalizedIntensity);
-                            
-                            // Fill pixels
-                            for (let px = Math.floor(i * scaleX); px < Math.ceil((i + 1) * scaleX); px++) {
-                                for (let py = Math.floor(j * scaleY); py < Math.ceil((j + 1) * scaleY); py++) {
-                                    if (px >= 0 && px < this.width && py >= 0 && py < this.height) {
-                                        const index = (py * this.width + px) * 4;
-                                        data[index] = rgb.r;     // Red
-                                        data[index + 1] = rgb.g; // Green
-                                        data[index + 2] = rgb.b; // Blue
-                                        data[index + 3] = 255;   // Alpha
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-                
-                this.ctx.putImageData(imageData, 0, 0);
-            }
-            
-            // Magma colormap implementation (similar to matplotlib's magma)
-            magmaColormap(t) {
-                // Clamp t to [0, 1]
-                t = Math.max(0, Math.min(1, t));
-                
-                // Magma colormap RGB values (approximation of matplotlib's magma)
-                const magmaColors = [
-                    [0.001462, 0.000466, 0.013866],
-                    [0.002267, 0.001270, 0.018570],
-                    [0.003299, 0.002249, 0.024239],
-                    [0.004547, 0.003392, 0.030909],
-                    [0.006006, 0.004692, 0.038558],
-                    [0.007676, 0.006136, 0.047836],
-                    [0.009561, 0.007713, 0.058494],
-                    [0.011663, 0.009417, 0.070749],
-                    [0.013995, 0.011225, 0.084736],
-                    [0.016561, 0.013136, 0.100393],
-                    [0.019373, 0.015133, 0.117747],
-                    [0.022447, 0.017199, 0.136827],
-                    [0.025793, 0.019331, 0.157671],
-                    [0.029432, 0.021503, 0.180653],
-                    [0.033385, 0.023702, 0.205879],
-                    [0.037668, 0.025921, 0.233692],
-                    [0.042253, 0.028139, 0.264022],
-                    [0.046915, 0.030324, 0.296855],
-                    [0.051644, 0.032474, 0.332164],
-                    [0.056449, 0.034569, 0.369934],
-                    [0.061340, 0.036590, 0.410665],
-                    [0.066331, 0.038504, 0.454937],
-                    [0.071429, 0.040294, 0.502718],
-                    [0.076637, 0.041905, 0.554050],
-                    [0.081962, 0.043328, 0.608884],
-                    [0.087411, 0.044556, 0.667063],
-                    [0.092990, 0.045583, 0.728534],
-                    [0.098702, 0.046402, 0.793468],
-                    [0.104551, 0.047008, 0.861582],
-                    [0.110536, 0.047399, 0.932469],
-                    [0.116656, 0.047574, 1.000000],
-                    [0.122908, 0.047536, 1.000000],
-                    [0.129285, 0.047293, 1.000000],
-                    [0.135778, 0.046856, 1.000000],
-                    [0.142378, 0.046242, 1.000000],
-                    [0.149073, 0.045468, 1.000000],
-                    [0.155850, 0.044559, 1.000000],
-                    [0.162689, 0.043554, 1.000000],
-                    [0.169575, 0.042489, 1.000000],
-                    [0.176493, 0.041402, 1.000000],
-                    [0.183429, 0.040329, 1.000000],
-                    [0.190367, 0.039309, 1.000000],
-                    [0.197297, 0.038400, 1.000000],
-                    [0.204209, 0.037632, 1.000000],
-                    [0.211095, 0.037030, 1.000000],
-                    [0.217949, 0.036615, 1.000000],
-                    [0.224763, 0.036405, 1.000000],
-                    [0.231538, 0.036405, 1.000000],
-                    [0.238273, 0.036621, 1.000000],
-                    [0.244967, 0.037055, 1.000000],
-                    [0.251620, 0.037705, 1.000000],
-                    [0.258234, 0.038571, 1.000000],
-                    [0.264810, 0.039647, 1.000000],
-                    [0.271347, 0.040922, 1.000000],
-                    [0.277850, 0.042353, 1.000000],
-                    [0.284321, 0.043933, 1.000000],
-                    [0.290763, 0.045644, 1.000000],
-                    [0.297178, 0.047470, 1.000000],
-                    [0.303568, 0.049396, 1.000000],
-                    [0.309935, 0.051407, 1.000000],
-                    [0.316282, 0.053490, 1.000000],
-                    [0.322610, 0.055634, 1.000000],
-                    [0.328921, 0.057827, 1.000000],
-                    [0.335217, 0.060060, 1.000000],
-                    [0.341500, 0.062325, 1.000000],
-                    [0.347771, 0.064616, 1.000000],
-                    [0.354032, 0.066925, 1.000000],
-                    [0.360284, 0.069247, 1.000000],
-                    [0.366529, 0.071579, 1.000000],
-                    [0.372768, 0.073915, 1.000000],
-                    [0.379001, 0.076253, 1.000000],
-                    [0.385228, 0.078591, 1.000000],
-                    [0.391453, 0.080927, 1.000000],
-                    [0.397674, 0.083257, 1.000000],
-                    [0.403894, 0.085580, 1.000000],
-                    [0.410113, 0.087896, 1.000000],
-                    [0.416331, 0.090203, 1.000000],
-                    [0.422549, 0.092501, 1.000000],
-                    [0.428768, 0.094790, 1.000000],
-                    [0.434987, 0.097069, 1.000000],
-                    [0.441207, 0.099338, 1.000000],
-                    [0.447428, 0.101597, 1.000000],
-                    [0.453651, 0.103848, 1.000000],
-                    [0.459875, 0.106089, 1.000000],
-                    [0.466100, 0.108322, 1.000000],
-                    [0.472328, 0.110547, 1.000000],
-                    [0.478558, 0.112764, 1.000000],
-                    [0.484789, 0.114974, 1.000000],
-                    [0.491022, 0.117179, 1.000000],
-                    [0.497257, 0.119379, 1.000000],
-                    [0.503493, 0.121575, 1.000000],
-                    [0.509730, 0.123769, 1.000000],
-                    [0.515967, 0.125960, 1.000000],
-                    [0.522206, 0.128150, 1.000000],
-                    [0.528444, 0.130341, 1.000000],
-                    [0.534683, 0.132534, 1.000000],
-                    [0.540920, 0.134729, 1.000000],
-                    [0.547157, 0.136929, 1.000000],
-                    [0.553392, 0.139134, 1.000000],
-                    [0.559624, 0.141346, 1.000000],
-                    [0.565854, 0.143567, 1.000000],
-                    [0.572081, 0.145797, 1.000000],
-                    [0.578304, 0.148039, 1.000000],
-                    [0.584521, 0.150294, 1.000000],
-                    [0.590734, 0.152563, 1.000000],
-                    [0.596940, 0.154848, 1.000000],
-                    [0.603139, 0.157151, 1.000000],
-                    [0.609330, 0.159474, 1.000000],
-                    [0.615513, 0.161817, 1.000000],
-                    [0.621685, 0.164184, 1.000000],
-                    [0.627847, 0.166575, 1.000000],
-                    [0.633998, 0.168992, 1.000000],
-                    [0.640135, 0.171438, 1.000000],
-                    [0.646260, 0.173914, 1.000000],
-                    [0.652369, 0.176421, 1.000000],
-                    [0.658463, 0.178962, 1.000000],
-                    [0.664540, 0.181539, 1.000000],
-                    [0.670599, 0.184153, 1.000000],
-                    [0.676638, 0.186807, 1.000000],
-                    [0.682656, 0.189501, 1.000000],
-                    [0.688653, 0.192239, 1.000000],
-                    [0.694627, 0.195021, 1.000000],
-                    [0.700576, 0.197851, 1.000000],
-                    [0.706500, 0.200728, 1.000000],
-                    [0.712396, 0.203656, 1.000000],
-                    [0.718264, 0.206636, 1.000000],
-                    [0.724103, 0.209670, 1.000000],
-                    [0.729909, 0.212759, 1.000000],
-                    [0.735683, 0.215906, 1.000000],
-                    [0.741423, 0.219112, 1.000000],
-                    [0.747127, 0.222378, 1.000000],
-                    [0.752794, 0.225706, 1.000000],
-                    [0.758422, 0.229097, 1.000000],
-                    [0.764010, 0.232554, 1.000000],
-                    [0.769556, 0.236077, 1.000000],
-                    [0.775059, 0.239667, 1.000000],
-                    [0.780517, 0.243327, 1.000000],
-                    [0.785929, 0.247056, 1.000000],
-                    [0.791293, 0.250856, 1.000000],
-                    [0.796607, 0.254728, 1.000000],
-                    [0.801871, 0.258674, 1.000000],
-                    [0.807082, 0.262692, 1.000000],
-                    [0.812239, 0.266786, 1.000000],
-                    [0.817341, 0.270954, 1.000000],
-                    [0.822386, 0.275197, 1.000000],
-                    [0.827372, 0.279517, 1.000000],
-                    [0.832299, 0.283913, 1.000000],
-                    [0.837165, 0.288385, 1.000000],
-                    [0.841969, 0.292933, 1.000000],
-                    [0.846709, 0.297559, 1.000000],
-                    [0.851384, 0.302260, 1.000000],
-                    [0.855992, 0.307038, 1.000000],
-                    [0.860533, 0.311892, 1.000000],
-                    [0.865006, 0.316822, 1.000000],
-                    [0.869409, 0.321827, 1.000000],
-                    [0.873741, 0.326906, 1.000000],
-                    [0.878001, 0.332060, 1.000000],
-                    [0.882188, 0.337287, 1.000000],
-                    [0.886302, 0.342586, 1.000000],
-                    [0.890341, 0.347957, 1.000000],
-                    [0.894305, 0.353399, 1.000000],
-                    [0.898192, 0.358911, 1.000000],
-                    [0.902003, 0.364492, 1.000000],
-                    [0.905735, 0.370140, 1.000000],
-                    [0.909390, 0.375856, 1.000000],
-                    [0.912966, 0.381636, 1.000000],
-                    [0.916462, 0.387481, 1.000000],
-                    [0.919879, 0.393389, 1.000000],
-                    [0.923215, 0.399359, 1.000000],
-                    [0.926470, 0.405389, 1.000000],
-                    [0.929644, 0.411479, 1.000000],
-                    [0.932737, 0.417627, 1.000000],
-                    [0.935747, 0.423831, 1.000000],
-                    [0.938675, 0.430091, 1.000000],
-                    [0.941521, 0.436405, 1.000000],
-                    [0.944285, 0.442772, 1.000000],
-                    [0.946965, 0.449191, 1.000000],
-                    [0.949562, 0.455660, 1.000000],
-                    [0.952075, 0.462178, 1.000000],
-                    [0.954506, 0.468744, 1.000000],
-                    [0.956852, 0.475356, 1.000000],
-                    [0.959114, 0.482014, 1.000000],
-                    [0.961293, 0.488716, 1.000000],
-                    [0.963387, 0.495462, 1.000000],
-                    [0.965397, 0.502249, 1.000000],
-                    [0.967322, 0.509078, 1.000000],
-                    [0.969163, 0.515946, 1.000000],
-                    [0.970919, 0.522853, 1.000000],
-                    [0.972590, 0.529798, 1.000000],
-                    [0.974176, 0.536780, 1.000000],
-                    [0.975677, 0.543798, 1.000000],
-                    [0.977092, 0.550850, 1.000000],
-                    [0.978422, 0.557937, 1.000000],
-                    [0.979666, 0.565057, 1.000000],
-                    [0.980824, 0.572209, 1.000000],
-                    [0.981895, 0.579392, 1.000000],
-                    [0.982881, 0.586606, 1.000000],
-                    [0.983779, 0.593849, 1.000000],
-                    [0.984591, 0.601122, 1.000000],
-                    [0.985315, 0.608422, 1.000000],
-                    [0.985952, 0.615750, 1.000000],
-                    [0.986502, 0.623105, 1.000000],
-                    [0.986964, 0.630485, 1.000000],
-                    [0.987337, 0.637890, 1.000000],
-                    [0.987622, 0.645320, 1.000000],
-                    [0.987819, 0.652773, 1.000000],
-                    [0.987926, 0.660250, 1.000000],
-                    [0.987945, 0.667748, 1.000000],
-                    [0.987874, 0.675267, 1.000000],
-                    [0.987714, 0.682807, 1.000000],
-                    [0.987464, 0.690366, 1.000000],
-                    [0.987124, 0.697944, 1.000000],
-                    [0.986694, 0.705540, 1.000000],
-                    [0.986175, 0.713153, 1.000000],
-                    [0.985566, 0.720782, 1.000000],
-                    [0.984865, 0.728427, 1.000000],
-                    [0.984075, 0.736087, 1.000000],
-                    [0.983196, 0.743758, 1.000000],
-                    [0.982228, 0.751442, 1.000000],
-                    [0.981173, 0.759135, 1.000000],
-                    [0.980032, 0.766837, 1.000000],
-                    [0.978806, 0.774545, 1.000000],
-                    [0.977497, 0.782258, 1.000000],
-                    [0.976108, 0.789974, 1.000000],
-                    [0.974638, 0.797692, 1.000000],
-                    [0.973088, 0.805409, 1.000000],
-                    [0.971468, 0.813122, 1.000000],
-                    [0.969783, 0.820825, 1.000000],
-                    [0.968041, 0.828515, 1.000000],
-                    [0.966243, 0.836191, 1.000000],
-                    [0.964394, 0.843848, 1.000000],
-                    [0.962517, 0.851476, 1.000000],
-                    [0.960626, 0.859069, 1.000000],
-                    [0.958720, 0.866624, 1.000000],
-                    [0.956834, 0.874129, 1.000000],
-                    [0.954997, 0.881569, 1.000000],
-                    [0.953215, 0.888942, 1.000000],
-                    [0.951546, 0.896226, 1.000000],
-                    [0.950018, 0.903409, 1.000000],
-                    [0.948683, 0.910473, 1.000000],
-                    [0.947594, 0.917399, 1.000000],
-                    [0.946809, 0.924168, 1.000000],
-                    [0.946392, 0.930761, 1.000000],
-                    [0.946403, 0.937159, 1.000000],
-                    [0.946903, 0.943348, 1.000000],
-                    [0.947937, 0.949318, 1.000000],
-                    [0.949545, 0.955063, 1.000000],
-                    [0.951740, 0.960587, 1.000000],
-                    [0.954529, 0.965896, 1.000000],
-                    [0.957896, 0.971003, 1.000000],
-                    [0.961812, 0.975924, 1.000000],
-                    [0.966249, 0.980678, 1.000000],
-                    [0.971162, 0.985282, 1.000000],
-                    [0.976511, 0.989753, 1.000000],
-                    [0.982257, 0.994109, 1.000000],
-                    [0.988362, 0.998364, 1.000000]
-                ];
-                
-                const index = Math.floor(t * (magmaColors.length - 1));
-                const color = magmaColors[index];
-                
-                return {
-                    r: Math.round(color[0] * 255),
-                    g: Math.round(color[1] * 255),
-                    b: Math.round(color[2] * 255)
-                };
-            }
-            
-            animate() {
-                if (this.isRunning) {
-                    this.evolveWavefunction();
-                    this.time += this.dt * this.timeScale;
-                }
-                
-                this.render();
-                requestAnimationFrame(() => this.animate());
-            }
+          this.setupControls();
+          this.initializeParticles();
+          this.animate();
         }
-        
-        // Start simulation when page loads
-        window.addEventListener('load', () => {
-            new WavefunctionSimulation();
-        });
+
+        setupControls() {
+          const timeStepSlider = document.getElementById("timeStep");
+          const couplingSlider = document.getElementById("coupling");
+          const clearBtn = document.getElementById("clearBtn");
+          const pauseBtn = document.getElementById("pauseBtn");
+
+          timeStepSlider.addEventListener("input", (e) => {
+            const val = (e.target.value / 1000).toFixed(3);
+            document.getElementById("timeStepValue").textContent = val;
+            this.dt = parseFloat(val);
+          });
+
+          couplingSlider.addEventListener("input", (e) => {
+            const val = (e.target.value / 100).toFixed(1);
+            document.getElementById("couplingValue").textContent = val;
+            this.coupling = parseFloat(val);
+          });
+
+          clearBtn.addEventListener("click", () => {
+            this.particles = [];
+            this.time = 0;
+            this.updateParticleInfo();
+          });
+
+          pauseBtn.addEventListener("click", () => {
+            this.isRunning = !this.isRunning;
+            pauseBtn.textContent = this.isRunning ? "Pause" : "Resume";
+          });
+
+          // Canvas click handlers
+          this.canvas.addEventListener("click", (e) => {
+            console.log("Canvas clicked!");
+            this.addParticle(e);
+          });
+
+          console.log("Event listeners attached to canvas");
+
+          this.timeScale = 1.0;
+          this.coupling = 0.3;
+          this.nextParticleColor = 0;
+        }
+
+        initializeParticles() {
+          // Start with no particles - user will click to add them
+          this.particles = [];
+          this.updateParticleInfo();
+        }
+
+        addParticle(event) {
+          console.log("Adding particle");
+          const rect = this.canvas.getBoundingClientRect();
+          const x = ((event.clientX - rect.left) / rect.width) * 2 - 1; // Convert to [-1,1]
+          const y = ((event.clientY - rect.top) / rect.height) * 2 - 1;
+
+          console.log("Mouse position:", event.clientX - rect.left, event.clientY - rect.top);
+          console.log("Converted position:", x, y);
+
+          const colors = ["#ff6b9d", "#4ecdc4", "#45b7d1", "#96ceb4", "#ffa726", "#ab47bc", "#26c6da", "#66bb6a"];
+          const color = colors[this.nextParticleColor % colors.length];
+          this.nextParticleColor++;
+
+          // Generate random initial momentum
+          const kx = (Math.random() - 0.5) * 20;
+          const ky = (Math.random() - 0.5) * 20;
+
+          const newParticle = {
+            x: x,
+            y: y,
+            vx: kx * 0.001, // Convert momentum to velocity
+            vy: ky * 0.001,
+            sigma: 0.05, // Wavepacket width - narrower for more coherent packets
+            kx: kx, // Store momentum for phase calculation
+            ky: ky,
+            mass: 1.0,
+            phase: Math.random() * Math.PI * 2,
+            color: color,
+            energy: 0,
+          };
+
+          this.particles.push(newParticle);
+          console.log("Total particles:", this.particles.length);
+          this.updateParticleInfo();
+        }
+
+        updateParticleInfo() {
+          const infoDiv = document.getElementById("particleInfo");
+          infoDiv.innerHTML = "";
+
+          // Info panel is empty - focus entirely on wavefunction visualization
+
+          // No info cards - focus on the wavefunction visualization
+        }
+
+        evolveWavefunction() {
+          // Clear wavefunction
+          for (let i = 0; i < this.gridSize; i++) {
+            for (let j = 0; j < this.gridSize; j++) {
+              this.wavefunction[i][j] = { re: 0, im: 0 };
+            }
+          }
+
+          // 1. Calculate Forces (Gradient of Potential)
+          let forces = this.particles.map(() => ({ x: 0, y: 0 }));
+          let potentials = this.particles.map(() => 0);
+          const mass = 1000; // Effective mass for physics scaling
+
+          for (let i = 0; i < this.particles.length; i++) {
+            for (let j = i + 1; j < this.particles.length; j++) {
+              const p1 = this.particles[i];
+              const p2 = this.particles[j];
+              const dx = p2.x - p1.x;
+              const dy = p2.y - p1.y;
+              const r2 = dx * dx + dy * dy;
+              const r = Math.sqrt(r2);
+              const softR = Math.max(r, 0.1); // Softening parameter
+
+              if (this.coupling > 0) {
+                // Force F = -dV/dr = -coupling/r^2 (attractive)
+                // Vector F = (coupling/r^3) * vec(r)
+                const forceMag = this.coupling / (softR * softR * softR);
+                const fx = forceMag * dx;
+                const fy = forceMag * dy;
+
+                forces[i].x += fx;
+                forces[i].y += fy;
+                forces[j].x -= fx;
+                forces[j].y -= fy;
+
+                const potential = -this.coupling / softR;
+                potentials[i] += potential / 2;
+                potentials[j] += potential / 2;
+              }
+            }
+          }
+
+          // 2. Update Particles (Ehrenfest Theorem / Classical Trajectories)
+          const dt = this.dt * this.timeScale;
+
+          this.particles.forEach((particle, index) => {
+            // Update Velocity: v = v + (F/m) * dt
+            particle.vx += (forces[index].x / mass) * dt;
+            particle.vy += (forces[index].y / mass) * dt;
+
+            // Update Position: x = x + v * dt
+            particle.x += particle.vx * dt;
+            particle.y += particle.vy * dt;
+
+            // Reflective Boundary Conditions
+            if (particle.x > 1) {
+              particle.x = 1;
+              particle.vx = -particle.vx;
+            }
+            if (particle.x < -1) {
+              particle.x = -1;
+              particle.vx = -particle.vx;
+            }
+            if (particle.y > 1) {
+              particle.y = 1;
+              particle.vy = -particle.vy;
+            }
+            if (particle.y < -1) {
+              particle.y = -1;
+              particle.vy = -particle.vy;
+            }
+
+            // Update momentum k based on velocity v (p = mv)
+            // Scaling factor 1000 matches initialization (vx = kx * 0.001)
+            particle.kx = particle.vx * 1000;
+            particle.ky = particle.vy * 1000;
+
+            // 3. Update Quantum Phase
+            // E = Kinetic + Potential
+            // Kinetic = p^2/2m = 0.5 * m * v^2
+            const kineticEnergy = 0.5 * mass * (particle.vx * particle.vx + particle.vy * particle.vy);
+            particle.energy = kineticEnergy + potentials[index];
+
+            // Phase evolution dφ/dt = -E/hbar (assuming hbar=1)
+            particle.phase += particle.energy * dt;
+
+            // 4. Generate Wavefunction
+            const x0 = ((particle.x + 1) * this.gridSize) / 2;
+            const y0 = ((particle.y + 1) * this.gridSize) / 2;
+            const sigma = (particle.sigma * this.gridSize) / 2;
+
+            for (let i = 0; i < this.gridSize; i++) {
+              for (let j = 0; j < this.gridSize; j++) {
+                const dx = i - x0;
+                const dy = j - y0;
+                const r2 = dx * dx + dy * dy;
+
+                if (r2 < sigma * sigma * 9) {
+                  const amplitude = Math.exp(-r2 / (2 * sigma * sigma));
+
+                  // Spatial phase: k dot r
+                  // Convert grid dx, dy to simulation units for phase calculation
+                  // Simulation width = 2, Grid width = gridSize
+                  const simDx = dx * (2 / this.gridSize);
+                  const simDy = dy * (2 / this.gridSize);
+
+                  const phase = particle.phase + particle.kx * simDx + particle.ky * simDy;
+
+                  const re = amplitude * Math.cos(phase);
+                  const im = amplitude * Math.sin(phase);
+
+                  this.wavefunction[i][j].re += re;
+                  this.wavefunction[i][j].im += im;
+                }
+              }
+            }
+          });
+
+          this.updateParticleInfo();
+        }
+
+        render() {
+          // Clear canvas
+          this.ctx.fillStyle = "#111";
+          this.ctx.fillRect(0, 0, this.width, this.height);
+
+          const imageData = this.ctx.createImageData(this.width, this.height);
+          const data = imageData.data;
+
+          const scaleX = this.width / this.gridSize;
+          const scaleY = this.height / this.gridSize;
+
+          // Render wavefunction
+          for (let i = 0; i < this.gridSize; i++) {
+            for (let j = 0; j < this.gridSize; j++) {
+              const psi = this.wavefunction[i][j];
+              const intensity = Math.sqrt(psi.re * psi.re + psi.im * psi.im);
+              const phase = Math.atan2(psi.im, psi.re);
+
+              if (intensity > 0.001) {
+                // Use magma colormap based on intensity (like matplotlib)
+                const normalizedIntensity = Math.min(intensity * 3, 1); // Scale factor for visibility
+                const rgb = this.magmaColormap(normalizedIntensity);
+
+                // Fill pixels
+                for (let px = Math.floor(i * scaleX); px < Math.ceil((i + 1) * scaleX); px++) {
+                  for (let py = Math.floor(j * scaleY); py < Math.ceil((j + 1) * scaleY); py++) {
+                    if (px >= 0 && px < this.width && py >= 0 && py < this.height) {
+                      const index = (py * this.width + px) * 4;
+                      data[index] = rgb.r; // Red
+                      data[index + 1] = rgb.g; // Green
+                      data[index + 2] = rgb.b; // Blue
+                      data[index + 3] = 255; // Alpha
+                    }
+                  }
+                }
+              }
+            }
+          }
+
+          this.ctx.putImageData(imageData, 0, 0);
+        }
+
+        // Magma colormap implementation (similar to matplotlib's magma)
+        magmaColormap(t) {
+          // Clamp t to [0, 1]
+          t = Math.max(0, Math.min(1, t));
+
+          // Magma colormap RGB values (approximation of matplotlib's magma)
+          const magmaColors = [
+            [0.001462, 0.000466, 0.013866],
+            [0.002267, 0.00127, 0.01857],
+            [0.003299, 0.002249, 0.024239],
+            [0.004547, 0.003392, 0.030909],
+            [0.006006, 0.004692, 0.038558],
+            [0.007676, 0.006136, 0.047836],
+            [0.009561, 0.007713, 0.058494],
+            [0.011663, 0.009417, 0.070749],
+            [0.013995, 0.011225, 0.084736],
+            [0.016561, 0.013136, 0.100393],
+            [0.019373, 0.015133, 0.117747],
+            [0.022447, 0.017199, 0.136827],
+            [0.025793, 0.019331, 0.157671],
+            [0.029432, 0.021503, 0.180653],
+            [0.033385, 0.023702, 0.205879],
+            [0.037668, 0.025921, 0.233692],
+            [0.042253, 0.028139, 0.264022],
+            [0.046915, 0.030324, 0.296855],
+            [0.051644, 0.032474, 0.332164],
+            [0.056449, 0.034569, 0.369934],
+            [0.06134, 0.03659, 0.410665],
+            [0.066331, 0.038504, 0.454937],
+            [0.071429, 0.040294, 0.502718],
+            [0.076637, 0.041905, 0.55405],
+            [0.081962, 0.043328, 0.608884],
+            [0.087411, 0.044556, 0.667063],
+            [0.09299, 0.045583, 0.728534],
+            [0.098702, 0.046402, 0.793468],
+            [0.104551, 0.047008, 0.861582],
+            [0.110536, 0.047399, 0.932469],
+            [0.116656, 0.047574, 1.0],
+            [0.122908, 0.047536, 1.0],
+            [0.129285, 0.047293, 1.0],
+            [0.135778, 0.046856, 1.0],
+            [0.142378, 0.046242, 1.0],
+            [0.149073, 0.045468, 1.0],
+            [0.15585, 0.044559, 1.0],
+            [0.162689, 0.043554, 1.0],
+            [0.169575, 0.042489, 1.0],
+            [0.176493, 0.041402, 1.0],
+            [0.183429, 0.040329, 1.0],
+            [0.190367, 0.039309, 1.0],
+            [0.197297, 0.0384, 1.0],
+            [0.204209, 0.037632, 1.0],
+            [0.211095, 0.03703, 1.0],
+            [0.217949, 0.036615, 1.0],
+            [0.224763, 0.036405, 1.0],
+            [0.231538, 0.036405, 1.0],
+            [0.238273, 0.036621, 1.0],
+            [0.244967, 0.037055, 1.0],
+            [0.25162, 0.037705, 1.0],
+            [0.258234, 0.038571, 1.0],
+            [0.26481, 0.039647, 1.0],
+            [0.271347, 0.040922, 1.0],
+            [0.27785, 0.042353, 1.0],
+            [0.284321, 0.043933, 1.0],
+            [0.290763, 0.045644, 1.0],
+            [0.297178, 0.04747, 1.0],
+            [0.303568, 0.049396, 1.0],
+            [0.309935, 0.051407, 1.0],
+            [0.316282, 0.05349, 1.0],
+            [0.32261, 0.055634, 1.0],
+            [0.328921, 0.057827, 1.0],
+            [0.335217, 0.06006, 1.0],
+            [0.3415, 0.062325, 1.0],
+            [0.347771, 0.064616, 1.0],
+            [0.354032, 0.066925, 1.0],
+            [0.360284, 0.069247, 1.0],
+            [0.366529, 0.071579, 1.0],
+            [0.372768, 0.073915, 1.0],
+            [0.379001, 0.076253, 1.0],
+            [0.385228, 0.078591, 1.0],
+            [0.391453, 0.080927, 1.0],
+            [0.397674, 0.083257, 1.0],
+            [0.403894, 0.08558, 1.0],
+            [0.410113, 0.087896, 1.0],
+            [0.416331, 0.090203, 1.0],
+            [0.422549, 0.092501, 1.0],
+            [0.428768, 0.09479, 1.0],
+            [0.434987, 0.097069, 1.0],
+            [0.441207, 0.099338, 1.0],
+            [0.447428, 0.101597, 1.0],
+            [0.453651, 0.103848, 1.0],
+            [0.459875, 0.106089, 1.0],
+            [0.4661, 0.108322, 1.0],
+            [0.472328, 0.110547, 1.0],
+            [0.478558, 0.112764, 1.0],
+            [0.484789, 0.114974, 1.0],
+            [0.491022, 0.117179, 1.0],
+            [0.497257, 0.119379, 1.0],
+            [0.503493, 0.121575, 1.0],
+            [0.50973, 0.123769, 1.0],
+            [0.515967, 0.12596, 1.0],
+            [0.522206, 0.12815, 1.0],
+            [0.528444, 0.130341, 1.0],
+            [0.534683, 0.132534, 1.0],
+            [0.54092, 0.134729, 1.0],
+            [0.547157, 0.136929, 1.0],
+            [0.553392, 0.139134, 1.0],
+            [0.559624, 0.141346, 1.0],
+            [0.565854, 0.143567, 1.0],
+            [0.572081, 0.145797, 1.0],
+            [0.578304, 0.148039, 1.0],
+            [0.584521, 0.150294, 1.0],
+            [0.590734, 0.152563, 1.0],
+            [0.59694, 0.154848, 1.0],
+            [0.603139, 0.157151, 1.0],
+            [0.60933, 0.159474, 1.0],
+            [0.615513, 0.161817, 1.0],
+            [0.621685, 0.164184, 1.0],
+            [0.627847, 0.166575, 1.0],
+            [0.633998, 0.168992, 1.0],
+            [0.640135, 0.171438, 1.0],
+            [0.64626, 0.173914, 1.0],
+            [0.652369, 0.176421, 1.0],
+            [0.658463, 0.178962, 1.0],
+            [0.66454, 0.181539, 1.0],
+            [0.670599, 0.184153, 1.0],
+            [0.676638, 0.186807, 1.0],
+            [0.682656, 0.189501, 1.0],
+            [0.688653, 0.192239, 1.0],
+            [0.694627, 0.195021, 1.0],
+            [0.700576, 0.197851, 1.0],
+            [0.7065, 0.200728, 1.0],
+            [0.712396, 0.203656, 1.0],
+            [0.718264, 0.206636, 1.0],
+            [0.724103, 0.20967, 1.0],
+            [0.729909, 0.212759, 1.0],
+            [0.735683, 0.215906, 1.0],
+            [0.741423, 0.219112, 1.0],
+            [0.747127, 0.222378, 1.0],
+            [0.752794, 0.225706, 1.0],
+            [0.758422, 0.229097, 1.0],
+            [0.76401, 0.232554, 1.0],
+            [0.769556, 0.236077, 1.0],
+            [0.775059, 0.239667, 1.0],
+            [0.780517, 0.243327, 1.0],
+            [0.785929, 0.247056, 1.0],
+            [0.791293, 0.250856, 1.0],
+            [0.796607, 0.254728, 1.0],
+            [0.801871, 0.258674, 1.0],
+            [0.807082, 0.262692, 1.0],
+            [0.812239, 0.266786, 1.0],
+            [0.817341, 0.270954, 1.0],
+            [0.822386, 0.275197, 1.0],
+            [0.827372, 0.279517, 1.0],
+            [0.832299, 0.283913, 1.0],
+            [0.837165, 0.288385, 1.0],
+            [0.841969, 0.292933, 1.0],
+            [0.846709, 0.297559, 1.0],
+            [0.851384, 0.30226, 1.0],
+            [0.855992, 0.307038, 1.0],
+            [0.860533, 0.311892, 1.0],
+            [0.865006, 0.316822, 1.0],
+            [0.869409, 0.321827, 1.0],
+            [0.873741, 0.326906, 1.0],
+            [0.878001, 0.33206, 1.0],
+            [0.882188, 0.337287, 1.0],
+            [0.886302, 0.342586, 1.0],
+            [0.890341, 0.347957, 1.0],
+            [0.894305, 0.353399, 1.0],
+            [0.898192, 0.358911, 1.0],
+            [0.902003, 0.364492, 1.0],
+            [0.905735, 0.37014, 1.0],
+            [0.90939, 0.375856, 1.0],
+            [0.912966, 0.381636, 1.0],
+            [0.916462, 0.387481, 1.0],
+            [0.919879, 0.393389, 1.0],
+            [0.923215, 0.399359, 1.0],
+            [0.92647, 0.405389, 1.0],
+            [0.929644, 0.411479, 1.0],
+            [0.932737, 0.417627, 1.0],
+            [0.935747, 0.423831, 1.0],
+            [0.938675, 0.430091, 1.0],
+            [0.941521, 0.436405, 1.0],
+            [0.944285, 0.442772, 1.0],
+            [0.946965, 0.449191, 1.0],
+            [0.949562, 0.45566, 1.0],
+            [0.952075, 0.462178, 1.0],
+            [0.954506, 0.468744, 1.0],
+            [0.956852, 0.475356, 1.0],
+            [0.959114, 0.482014, 1.0],
+            [0.961293, 0.488716, 1.0],
+            [0.963387, 0.495462, 1.0],
+            [0.965397, 0.502249, 1.0],
+            [0.967322, 0.509078, 1.0],
+            [0.969163, 0.515946, 1.0],
+            [0.970919, 0.522853, 1.0],
+            [0.97259, 0.529798, 1.0],
+            [0.974176, 0.53678, 1.0],
+            [0.975677, 0.543798, 1.0],
+            [0.977092, 0.55085, 1.0],
+            [0.978422, 0.557937, 1.0],
+            [0.979666, 0.565057, 1.0],
+            [0.980824, 0.572209, 1.0],
+            [0.981895, 0.579392, 1.0],
+            [0.982881, 0.586606, 1.0],
+            [0.983779, 0.593849, 1.0],
+            [0.984591, 0.601122, 1.0],
+            [0.985315, 0.608422, 1.0],
+            [0.985952, 0.61575, 1.0],
+            [0.986502, 0.623105, 1.0],
+            [0.986964, 0.630485, 1.0],
+            [0.987337, 0.63789, 1.0],
+            [0.987622, 0.64532, 1.0],
+            [0.987819, 0.652773, 1.0],
+            [0.987926, 0.66025, 1.0],
+            [0.987945, 0.667748, 1.0],
+            [0.987874, 0.675267, 1.0],
+            [0.987714, 0.682807, 1.0],
+            [0.987464, 0.690366, 1.0],
+            [0.987124, 0.697944, 1.0],
+            [0.986694, 0.70554, 1.0],
+            [0.986175, 0.713153, 1.0],
+            [0.985566, 0.720782, 1.0],
+            [0.984865, 0.728427, 1.0],
+            [0.984075, 0.736087, 1.0],
+            [0.983196, 0.743758, 1.0],
+            [0.982228, 0.751442, 1.0],
+            [0.981173, 0.759135, 1.0],
+            [0.980032, 0.766837, 1.0],
+            [0.978806, 0.774545, 1.0],
+            [0.977497, 0.782258, 1.0],
+            [0.976108, 0.789974, 1.0],
+            [0.974638, 0.797692, 1.0],
+            [0.973088, 0.805409, 1.0],
+            [0.971468, 0.813122, 1.0],
+            [0.969783, 0.820825, 1.0],
+            [0.968041, 0.828515, 1.0],
+            [0.966243, 0.836191, 1.0],
+            [0.964394, 0.843848, 1.0],
+            [0.962517, 0.851476, 1.0],
+            [0.960626, 0.859069, 1.0],
+            [0.95872, 0.866624, 1.0],
+            [0.956834, 0.874129, 1.0],
+            [0.954997, 0.881569, 1.0],
+            [0.953215, 0.888942, 1.0],
+            [0.951546, 0.896226, 1.0],
+            [0.950018, 0.903409, 1.0],
+            [0.948683, 0.910473, 1.0],
+            [0.947594, 0.917399, 1.0],
+            [0.946809, 0.924168, 1.0],
+            [0.946392, 0.930761, 1.0],
+            [0.946403, 0.937159, 1.0],
+            [0.946903, 0.943348, 1.0],
+            [0.947937, 0.949318, 1.0],
+            [0.949545, 0.955063, 1.0],
+            [0.95174, 0.960587, 1.0],
+            [0.954529, 0.965896, 1.0],
+            [0.957896, 0.971003, 1.0],
+            [0.961812, 0.975924, 1.0],
+            [0.966249, 0.980678, 1.0],
+            [0.971162, 0.985282, 1.0],
+            [0.976511, 0.989753, 1.0],
+            [0.982257, 0.994109, 1.0],
+            [0.988362, 0.998364, 1.0],
+          ];
+
+          const index = Math.floor(t * (magmaColors.length - 1));
+          const color = magmaColors[index];
+
+          return {
+            r: Math.round(color[0] * 255),
+            g: Math.round(color[1] * 255),
+            b: Math.round(color[2] * 255),
+          };
+        }
+
+        animate() {
+          if (this.isRunning) {
+            this.evolveWavefunction();
+            this.time += this.dt * this.timeScale;
+          }
+
+          this.render();
+          requestAnimationFrame(() => this.animate());
+        }
+      }
+
+      // Start simulation when page loads
+      window.addEventListener("load", () => {
+        new WavefunctionSimulation();
+      });
     </script>
-</body>
+  </body>
 </html>

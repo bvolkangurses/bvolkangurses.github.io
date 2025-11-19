@@ -205,10 +205,11 @@ document.addEventListener('DOMContentLoaded', updateGitHubStats);
     </div>
 
     <!-- Add more animation projects here -->
-    
+
   </div>
 
     <!-- Tools and Demos -->
+
   <div class="section-header">
     <h3>Tools and Demos</h3>
     <p class="text-muted">Interactive tools and demonstrations</p>
@@ -285,7 +286,7 @@ document.addEventListener('DOMContentLoaded', updateGitHubStats);
     </div>
 
     <!-- Add more game projects here -->
-    
+
   </div>
 
   <!-- Open Source Contributions Section -->
@@ -452,7 +453,7 @@ document.addEventListener('DOMContentLoaded', updateGitHubStats);
     </div>
 
     <!-- Add more open source projects here -->
-    
+
   </div>
 
 </div>

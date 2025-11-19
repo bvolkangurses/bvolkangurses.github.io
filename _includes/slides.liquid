@@ -20,12 +20,25 @@
             <i class="fa-solid fa-chevron-left"></i>
           </button>
           <div id="page-info-{{ page.slides | replace: '.', '-' | replace: '/', '-' }}" class="page-info mx-3">
-            Page <input type="number" id="page-input-{{ page.slides | replace: '.', '-' | replace: '/', '-' }}" class="page-input" value="1" min="1" max="1"> of <span id="total-pages-{{ page.slides | replace: '.', '-' | replace: '/', '-' }}">1</span>
+            Page
+            <input
+              type="number"
+              id="page-input-{{ page.slides | replace: '.', '-' | replace: '/', '-' }}"
+              class="page-input"
+              value="1"
+              min="1"
+              max="1"
+            >
+            of <span id="total-pages-{{ page.slides | replace: '.', '-' | replace: '/', '-' }}">1</span>
           </div>
           <button id="next-btn-{{ page.slides | replace: '.', '-' | replace: '/', '-' }}" class="control-btn">
             <i class="fa-solid fa-chevron-right"></i>
           </button>
-          <button id="fullscreen-btn-{{ page.slides | replace: '.', '-' | replace: '/', '-' }}" class="control-btn fullscreen-btn" title="Full Screen">
+          <button
+            id="fullscreen-btn-{{ page.slides | replace: '.', '-' | replace: '/', '-' }}"
+            class="control-btn fullscreen-btn"
+            title="Full Screen"
+          >
             <i class="fa-solid fa-expand"></i>
           </button>
         </div>
@@ -173,18 +186,21 @@
             // Set up full-screen functionality
             const fullscreenBtn = document.getElementById('fullscreen-btn-' + uniqueId);
             const pdfViewer = document.getElementById('pdf-viewer-' + uniqueId);
-            
+
             fullscreenBtn.addEventListener('click', function () {
               if (!document.fullscreenElement) {
-                pdfViewer.requestFullscreen().then(function() {
-                  pdfViewer.classList.add('fullscreen-mode');
-                  fullscreenBtn.innerHTML = '<i class="fa-solid fa-compress"></i>';
-                  fullscreenBtn.title = 'Exit Full Screen';
-                }).catch(function(err) {
-                  console.log('Error attempting to enable full-screen:', err.message);
-                });
+                pdfViewer
+                  .requestFullscreen()
+                  .then(function () {
+                    pdfViewer.classList.add('fullscreen-mode');
+                    fullscreenBtn.innerHTML = '<i class="fa-solid fa-compress"></i>';
+                    fullscreenBtn.title = 'Exit Full Screen';
+                  })
+                  .catch(function (err) {
+                    console.log('Error attempting to enable full-screen:', err.message);
+                  });
               } else {
-                document.exitFullscreen().then(function() {
+                document.exitFullscreen().then(function () {
                   pdfViewer.classList.remove('fullscreen-mode');
                   fullscreenBtn.innerHTML = '<i class="fa-solid fa-expand"></i>';
                   fullscreenBtn.title = 'Full Screen';
@@ -193,7 +209,7 @@
             });
 
             // Handle fullscreen change events (e.g., ESC key)
-            document.addEventListener('fullscreenchange', function() {
+            document.addEventListener('fullscreenchange', function () {
               if (!document.fullscreenElement) {
                 pdfViewer.classList.remove('fullscreen-mode');
                 fullscreenBtn.innerHTML = '<i class="fa-solid fa-expand"></i>';
