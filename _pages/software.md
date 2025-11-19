@@ -207,7 +207,7 @@ document.addEventListener('DOMContentLoaded', updateGitHubStats);
           <h5 class="card-title">Wavefunction Simulation</h5>
           <p class="card-text flex-grow-1">Interactive wavefunction simulation with real-time visualization of wave propagation and interference patterns.</p>
           <div class="mt-auto">
-            <a href="/simulations/wavefunction/" class="btn software-btn me-2">
+            <a href="/simulations/wavefunctionsim/" class="btn software-btn me-2">
               <i class="fas fa-play"></i> Launch
             </a>
             <a href="https://github.com/bvolkangurses/wavefunctionsim" class="btn software-btn-outline">
