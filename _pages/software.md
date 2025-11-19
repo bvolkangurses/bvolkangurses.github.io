@@ -1,10 +1,10 @@
 ---
 layout: page
-permalink: /software/
-title: Software
+permalink: /misc/
+title: Misc
 description: Interactive simulations, tools and open-source contributions
 nav: true
-nav_order: 5
+nav_order: 6
 ---
 
 <!-- _pages/software.md -->
