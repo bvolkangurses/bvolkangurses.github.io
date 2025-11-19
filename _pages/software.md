@@ -115,29 +115,39 @@ document.addEventListener('DOMContentLoaded', updateGitHubStats);
   margin-bottom: 1rem;
 }
 
-/* Improve vertical spacing between cards */
-#opensource-container .col {
+/* Improve vertical spacing between cards - apply to all sections */
+.software .col {
   margin-bottom: 1.5rem;
 }
 
-#opensource-container .software-card {
+.software .software-card {
   margin-bottom: 0;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-#opensource-container .software-card:hover {
+.software .software-card:hover {
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
-/* Better card internal spacing */
-#opensource-container .card-body {
+/* Better card internal spacing - apply to all sections */
+.software .card-body {
   padding: 1.5rem;
 }
 
-#opensource-container .card-text {
+.software .card-text {
   margin-bottom: 1rem;
   line-height: 1.5;
+}
+
+/* Consistent card title spacing */
+.software .card-title {
+  margin-bottom: 0.5rem;
+}
+
+/* Ensure consistent icon spacing for all sections */
+.software .software-icon {
+  margin-bottom: 1rem;
 }
 </style>
 
@@ -149,20 +159,20 @@ document.addEventListener('DOMContentLoaded', updateGitHubStats);
     <p class="text-muted">Physics simulations and interactive animations</p>
   </div>  <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 mb-5">
     
-    <!-- Example Animation Project -->
+    <!-- Wave Function Simulation -->
     <div class="col">
       <div class="card software-card h-100">
         <div class="card-body d-flex flex-column">
           <div class="software-icon mb-3 text-center">
-            <i class="fas fa-wave-square fa-3x"></i>
+            <i class="fas fa-atom fa-3x"></i>
           </div>
-          <h5 class="card-title">Physics Simulation</h5>
-          <p class="card-text flex-grow-1">Interactive wave propagation and interference patterns visualization.</p>
+          <h5 class="card-title">Wavefunction Simulation</h5>
+          <p class="card-text flex-grow-1">Interactive wavefunction simulation with real-time visualization of wave propagation and interference patterns.</p>
           <div class="mt-auto">
-            <a href="#" class="btn software-btn me-2">
-              <i class="fas fa-play"></i> Demo
+            <a href="https://bvolkangurses.github.io/wavefunctionsim/" class="btn software-btn me-2">
+              <i class="fas fa-external-link-alt"></i> Launch
             </a>
-            <a href="#" class="btn software-btn-outline">
+            <a href="https://github.com/bvolkangurses/wavefunctionsim" class="btn software-btn-outline">
               <i class="fab fa-github"></i> Code
             </a>
           </div>
@@ -205,14 +215,14 @@ document.addEventListener('DOMContentLoaded', updateGitHubStats);
     </div>
     -->
 
-    <!-- Photonic Circuit Designer -->
+    <!-- Photonic IC Designer -->
     <div class="col">
       <div class="card software-card h-100">
         <div class="card-body d-flex flex-column">
           <div class="software-icon mb-3 text-center">
             <i class="fas fa-microchip fa-3x"></i>
           </div>
-          <h5 class="card-title">Photonic Circuit Designer</h5>
+          <h5 class="card-title">Photonic IC Designer</h5>
           <p class="card-text flex-grow-1">Advanced web-based tool for designing and simulating integrated photonic circuits with real-time performance analysis.</p>
           <div class="tech-stack mb-3">
             <span class="badge bg-primary me-1">JavaScript</span>
@@ -221,10 +231,10 @@ document.addEventListener('DOMContentLoaded', updateGitHubStats);
             <span class="badge bg-warning text-dark">Python</span>
           </div>
           <div class="mt-auto">
-            <a href="#" class="btn software-btn me-2">
+            <a href="https://bvolkangurses.github.io/matterware/" class="btn software-btn me-2">
               <i class="fas fa-external-link-alt"></i> Launch
             </a>
-            <a href="#" class="btn software-btn-outline">
+            <a href="https://github.com/bvolkangurses/matterware" class="btn software-btn-outline">
               <i class="fab fa-github"></i> Code
             </a>
           </div>
@@ -347,7 +357,7 @@ document.addEventListener('DOMContentLoaded', updateGitHubStats);
             </div>
             <div class="flex-grow-1">
               <h5 class="card-title mb-1">pennylane</h5>
-              <p class="text-muted small mb-0">Python • Quantum Machine Learning</p>
+              <p class="text-muted small mb-0">Python • Quantum Computing</p>
             </div>
             <div class="github-stats">
               <span class="badge bg-secondary me-1">
