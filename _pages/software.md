@@ -207,7 +207,7 @@ document.addEventListener('DOMContentLoaded', updateGitHubStats);
           <h5 class="card-title">Wavefunction Simulation</h5>
           <p class="card-text flex-grow-1">Interactive wavefunction simulation with real-time visualization of wave propagation and interference patterns.</p>
           <div class="mt-auto">
-            <a href="/assets/html/wavefunctionsim.html" class="btn software-btn me-2">
+            <a href="/simulations/wavefunction/" class="btn software-btn me-2">
               <i class="fas fa-play"></i> Launch
             </a>
             <a href="https://github.com/bvolkangurses/wavefunctionsim" class="btn software-btn-outline">
@@ -298,7 +298,7 @@ document.addEventListener('DOMContentLoaded', updateGitHubStats);
             <i class="fas fa-microchip fa-3x"></i>
           </div>
           <h5 class="card-title">Photonic IC Designer</h5>
-          <p class="card-text flex-grow-1">Advanced web-based tool for designing and simulating integrated photonic circuits with real-time performance analysis.</p>
+          <p class="card-text flex-grow-1">Advanced web-based tool for designing and simulating photonic and quantum chips with a neural operator-based design suite.</p>
           <div class="mt-auto">
             <a href="https://github.com/bvolkangurses/picdesigner" class="btn software-btn-outline">
               <i class="fab fa-github"></i> Code
