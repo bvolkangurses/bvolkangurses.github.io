@@ -32,9 +32,9 @@ There are various fundamental physical limits arising from quantum field theory 
 
 **Computing limits**
 
-Computing is concerned with the physical manipulation of information, where abstract logical operations are mapped to the state transformations of a physical system. This process involves encoding information into physical states, executing an algorithm through a controlled sequence of these transformations, and decoding the final state to obtain the computational result.
+<!-- Computing is concerned with the physical manipulation of information, where abstract logical operations are mapped to the state transformations of a physical system. This process involves encoding information into physical states, executing an algorithm through a controlled sequence of these transformations, and decoding the final state to obtain the computational result.
 
-Even before invoking physical laws, the mathematical framework we use to describe information imposes fundamental limits. One example is intrinsic dualities between different descriptive domains, where achieving precision in one domain necessitates a trade-off in another. For example, the relationship between time and energy as Fourier conjugates means a process cannot be arbitrarily localized in both simultaneously. This mathematical uncertainty principle fundamentally limits the theoretical precision of any information manipulation, independent of its physical realization.
+Even before invoking physical laws, the mathematical framework we use to describe information imposes fundamental limits. One example is intrinsic dualities between different descriptive domains, where achieving precision in one domain necessitates a trade-off in another. For example, the relationship between time and energy as Fourier conjugates means a process cannot be arbitrarily localized in both simultaneously. This mathematical uncertainty principle fundamentally limits the theoretical precision of any information manipulation, independent of its physical realization. -->
 
 <!--
 This mathematical uncertainty principle happens to show up exactly similarly in quantum mechanics, where the non-commutativity of conjugate operators leads to  -->
