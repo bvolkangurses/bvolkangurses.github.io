@@ -149,6 +149,42 @@ document.addEventListener('DOMContentLoaded', updateGitHubStats);
 .software .software-icon {
   margin-bottom: 1rem;
 }
+
+/* Force consistent card heights and structure */
+.software .software-card {
+  min-height: 320px;
+}
+
+.software .card-body {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 280px;
+}
+
+/* Normalize different content layouts */
+.software .card-text {
+  flex-grow: 1;
+  display: flex;
+  align-items: flex-start;
+}
+
+/* Ensure buttons always align at bottom */
+.software .mt-auto {
+  margin-top: auto !important;
+  padding-top: 1rem;
+}
+
+/* Consistent tech stack spacing */
+.software .tech-stack {
+  margin: 0.75rem 0;
+}
+
+/* Normalize open source cards to match others */
+#opensource-container .d-flex.align-items-start {
+  min-height: 80px;
+  margin-bottom: 0.75rem;
+}
 </style>
 
 <div class="software">
