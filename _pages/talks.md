@@ -5,7 +5,7 @@ permalink: /talks/
 description: Bridging physics and engineering since 2005
 nav: true
 nav_order: 4
-display_categories:
+display_categories: false
 horizontal: false
 ---
 
@@ -18,7 +18,7 @@ horizontal: false
     <h2 class="category">{{ category }}</h2>
   </a>
   {% assign categorized_talks = site.talks | where: "category", category %}
-  {% assign sorted_talks = categorized_talks | sort: "date" | reverse %}
+  {% assign sorted_talks = categorized_talks | sort: "name" | reverse %}
   <!-- Generate cards for each talk -->
   {% if page.horizontal %}
   <div class="container">
@@ -41,7 +41,7 @@ horizontal: false
 
 <!-- Display talks without categories -->
 
-{% assign sorted_talks = site.talks | sort: "date" | reverse %}
+{% assign sorted_talks = site.talks | sort: "name" | reverse %}
 
   <!-- Generate cards for each talk -->
 

@@ -118,6 +118,30 @@
               pageNum++;
               queueRenderPage(pageNum);
             });
+
+            // Set up keyboard navigation
+            function handleKeyPress(event) {
+              // Only handle arrow keys when the slides viewer is visible and focused
+              if (event.key === 'ArrowLeft') {
+                event.preventDefault();
+                if (pageNum <= 1) return;
+                pageNum--;
+                queueRenderPage(pageNum);
+              } else if (event.key === 'ArrowRight') {
+                event.preventDefault();
+                if (pageNum >= pdfDoc.numPages) return;
+                pageNum++;
+                queueRenderPage(pageNum);
+              }
+            }
+
+            // Add keyboard event listener to document
+            document.addEventListener('keydown', handleKeyPress);
+
+            // Optional: Remove event listener when navigating away (cleanup)
+            window.addEventListener('beforeunload', function() {
+              document.removeEventListener('keydown', handleKeyPress);
+            });
           })
           .catch(function (error) {
             console.error('Error loading PDF:', error);
