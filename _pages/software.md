@@ -161,6 +161,32 @@ document.addEventListener('DOMContentLoaded', updateGitHubStats);
 .software .software-icon {
   margin-bottom: 1rem;
 }
+
+/* Reduce excessive height in Tools and Demos cards */
+.software .card.software-card.h-100 {
+  height: auto !important;
+  min-height: 0;
+}
+
+/* Tighter spacing for card body in all sections */
+.software .card-body.d-flex.flex-column {
+  gap: 0.75rem;
+}
+
+/* Reduce icon margin for tighter layout */
+.software .software-icon.mb-3 {
+  margin-bottom: 0.75rem !important;
+}
+
+/* Reduce tech-stack spacing */
+.software .tech-stack.mb-3 {
+  margin-bottom: 0.5rem !important;
+}
+
+.software .tech-stack .badge {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.75rem;
+}
 </style>
 
 <div class="software">
@@ -273,12 +299,6 @@ document.addEventListener('DOMContentLoaded', updateGitHubStats);
           </div>
           <h5 class="card-title">Photonic IC Designer</h5>
           <p class="card-text flex-grow-1">Advanced web-based tool for designing and simulating integrated photonic circuits with real-time performance analysis.</p>
-          <div class="tech-stack mb-3">
-            <span class="badge bg-primary me-1">JavaScript</span>
-            <span class="badge bg-success me-1">WebGL</span>
-            <span class="badge bg-info me-1">Three.js</span>
-            <span class="badge bg-warning text-dark">Python</span>
-          </div>
           <div class="mt-auto">
             <a href="https://github.com/bvolkangurses/picdesigner" class="btn software-btn-outline">
               <i class="fab fa-github"></i> Code
@@ -424,6 +444,37 @@ document.addEventListener('DOMContentLoaded', updateGitHubStats);
       </div>
     </div>
 
+    <!-- gdsfactory -->
+    <div id="gdsfactory-card" class="col">
+      <div class="card software-card h-100">
+        <div class="card-body d-flex flex-column">
+          <div class="d-flex align-items-start mb-3">
+            <div class="software-icon me-3">
+              <i class="fab fa-github fa-2x"></i>
+            </div>
+            <div class="flex-grow-1">
+              <h5 class="card-title mb-1">gdsfactory</h5>
+              <p class="text-muted small mb-0">Python • Chip Design</p>
+            </div>
+            <div class="github-stats">
+              <span class="badge bg-secondary me-1">
+                <i class="fas fa-star"></i> <span class="stars-count">400+</span>
+              </span>
+              <span class="badge bg-secondary">
+                <i class="fas fa-code-branch"></i> <span class="forks-count">200+</span>
+              </span>
+            </div>
+          </div>
+          <p class="card-text flex-grow-1">Open source platform for designing photonic, analog, quantum integrated circuits with layout generation and FDTD simulations.</p>
+          <div class="mt-auto">
+            <a href="https://github.com/gdsfactory/gdsfactory" class="btn software-btn">
+              <i class="fab fa-github"></i> Repository
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- QuTiP -->
     <div id="qutip-card" class="col">
       <div class="card software-card h-100">
@@ -448,37 +499,6 @@ document.addEventListener('DOMContentLoaded', updateGitHubStats);
           <p class="card-text flex-grow-1">QuTiP - Quantum Toolbox in Python. A library for the numerical simulation of open quantum systems.</p>
           <div class="mt-auto">
             <a href="https://github.com/qutip/qutip" class="btn software-btn">
-              <i class="fab fa-github"></i> Repository
-            </a>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- gdsfactory -->
-    <div id="gdsfactory-card" class="col">
-      <div class="card software-card h-100">
-        <div class="card-body d-flex flex-column">
-          <div class="d-flex align-items-start mb-3">
-            <div class="software-icon me-3">
-              <i class="fab fa-github fa-2x"></i>
-            </div>
-            <div class="flex-grow-1">
-              <h5 class="card-title mb-1">gdsfactory</h5>
-              <p class="text-muted small mb-0">Python • Photonics</p>
-            </div>
-            <div class="github-stats">
-              <span class="badge bg-secondary me-1">
-                <i class="fas fa-star"></i> <span class="stars-count">400+</span>
-              </span>
-              <span class="badge bg-secondary">
-                <i class="fas fa-code-branch"></i> <span class="forks-count">100+</span>
-              </span>
-            </div>
-          </div>
-          <p class="card-text flex-grow-1">Open-source platform for designing photonic integrated circuits with automated layout generation and simulation tools.</p>
-          <div class="mt-auto">
-            <a href="https://github.com/gdsfactory/gdsfactory" class="btn software-btn">
               <i class="fab fa-github"></i> Repository
             </a>
           </div>
