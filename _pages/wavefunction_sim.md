@@ -1,6 +1,6 @@
 ---
 layout: page
-permalink: /simulations/wavefunction/
+permalink: /simulations/wavefunctionsim/
 title: Wavefunction Simulation
 description: Visualization of wavefunction evolution and Hamiltonian dynamics
 nav: false
