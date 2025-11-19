@@ -40,7 +40,8 @@ async function updateGitHubStats() {
     { owner: 'pytorch', repo: 'pytorch', cardId: 'pytorch-card' },
     { owner: 'qiskit', repo: 'qiskit', cardId: 'qiskit-card' },
     { owner: 'PennyLaneAI', repo: 'pennylane', cardId: 'pennylane-card' },
-    { owner: 'qutip', repo: 'qutip', cardId: 'qutip-card' }
+    { owner: 'qutip', repo: 'qutip', cardId: 'qutip-card' },
+    { owner: 'gdsfactory', repo: 'gdsfactory', cardId: 'gdsfactory-card' }
   ];
 
   // Fetch all repo stats
@@ -447,6 +448,37 @@ document.addEventListener('DOMContentLoaded', updateGitHubStats);
           <p class="card-text flex-grow-1">QuTiP - Quantum Toolbox in Python. A library for the numerical simulation of open quantum systems.</p>
           <div class="mt-auto">
             <a href="https://github.com/qutip/qutip" class="btn software-btn">
+              <i class="fab fa-github"></i> Repository
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- gdsfactory -->
+    <div id="gdsfactory-card" class="col">
+      <div class="card software-card h-100">
+        <div class="card-body d-flex flex-column">
+          <div class="d-flex align-items-start mb-3">
+            <div class="software-icon me-3">
+              <i class="fab fa-github fa-2x"></i>
+            </div>
+            <div class="flex-grow-1">
+              <h5 class="card-title mb-1">gdsfactory</h5>
+              <p class="text-muted small mb-0">Python • Photonics</p>
+            </div>
+            <div class="github-stats">
+              <span class="badge bg-secondary me-1">
+                <i class="fas fa-star"></i> <span class="stars-count">400+</span>
+              </span>
+              <span class="badge bg-secondary">
+                <i class="fas fa-code-branch"></i> <span class="forks-count">100+</span>
+              </span>
+            </div>
+          </div>
+          <p class="card-text flex-grow-1">Open-source platform for designing photonic integrated circuits with automated layout generation and simulation tools.</p>
+          <div class="mt-auto">
+            <a href="https://github.com/gdsfactory/gdsfactory" class="btn software-btn">
               <i class="fab fa-github"></i> Repository
             </a>
           </div>
