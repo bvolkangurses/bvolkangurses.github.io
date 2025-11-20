@@ -6,7 +6,7 @@ subtitle: PhD Candidate in Electrical Engineering and Physics at Caltech | Visit
 
 profile:
   align: right
-  image: Gurses_Photo2.jpg
+  image: Gurses_Photo.jpg
   image_circular: true # crops the image to make it circular
   more_info: >
     <p><a href="mailto:gurses@caltech.edu">gurses@caltech.edu</a></p>
