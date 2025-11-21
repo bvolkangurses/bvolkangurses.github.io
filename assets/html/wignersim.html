@@ -1,0 +1,655 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Wigner Function Simulation</title>
+    <script>
+      // Security: Check if accessed from authorized domain
+      (function () {
+        const allowedDomains = ["volkangurses.com", "bvolkangurses.github.io", "localhost", "127.0.0.1"];
+
+        const currentDomain = window.location.hostname;
+        const referrer = document.referrer;
+
+        const isAllowedDomain = allowedDomains.some((domain) => currentDomain.includes(domain));
+        const hasValidReferrer = referrer && allowedDomains.some((domain) => referrer.includes(domain));
+
+        if (isAllowedDomain && !hasValidReferrer && !sessionStorage.getItem("auth_sim")) {
+          window.location.href = "/software/";
+        }
+
+        if (!isAllowedDomain) {
+          window.location.href = "/";
+        }
+      })();
+    </script>
+    <script>
+      // Detect theme from parent page or system preference
+      (function () {
+        let isDark = false;
+
+        try {
+          if (window.parent && window.parent.document) {
+            const parentHtml = window.parent.document.documentElement;
+            isDark = parentHtml.getAttribute("data-theme") === "dark";
+          }
+        } catch (e) {
+          isDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+        }
+
+        document.documentElement.setAttribute("data-theme", isDark ? "dark" : "light");
+
+        try {
+          if (window.parent && window.parent.document) {
+            const observer = new MutationObserver(() => {
+              const parentHtml = window.parent.document.documentElement;
+              const parentTheme = parentHtml.getAttribute("data-theme");
+              if (parentTheme) {
+                document.documentElement.setAttribute("data-theme", parentTheme);
+              }
+            });
+            observer.observe(window.parent.document.documentElement, {
+              attributes: true,
+              attributeFilter: ["data-theme"],
+            });
+          }
+        } catch (e) {
+          // Silently fail
+        }
+      })();
+    </script>
+    <style>
+      :root {
+        --bg-color: #ffffff;
+        --text-color: #000000;
+        --text-color-light: #828282;
+        --card-bg-color: #f8f9fa;
+        --border-color: #dee2e6;
+        --button-bg: #b509ac;
+        --button-hover: #8a0782;
+        --button-text: #ffffff;
+        --canvas-border: #dee2e6;
+      }
+
+      html[data-theme="dark"] {
+        --bg-color: #1c1c1d;
+        --text-color: #e0e0e0;
+        --text-color-light: #828282;
+        --card-bg-color: #212529;
+        --border-color: #424246;
+        --button-bg: #2698ba;
+        --button-hover: #1a7a95;
+        --button-text: #ffffff;
+        --canvas-border: #424246;
+      }
+
+      * {
+        transition:
+          background-color 0.3s ease,
+          color 0.1s ease,
+          border-color 0.3s ease;
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        padding: 8px 12px 4px 12px;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        background-color: var(--bg-color);
+        color: var(--text-color);
+        line-height: 1.4;
+      }
+
+      .container {
+        max-width: 1000px;
+        margin: 0 auto;
+      }
+
+      .canvas-container {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 6px;
+        padding: 4px;
+        background-color: var(--card-bg-color);
+        border-radius: 4px;
+        border: 1px solid var(--border-color);
+      }
+
+      canvas {
+        border: 2px solid var(--canvas-border);
+        border-radius: 6px;
+        max-width: 100%;
+        height: auto;
+      }
+
+      .controls {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        padding: 6px 8px;
+        background-color: var(--card-bg-color);
+        border-radius: 4px;
+        border: 1px solid var(--border-color);
+        margin-bottom: 6px;
+      }
+
+      .control-group {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+
+      .control-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      label {
+        font-weight: 500;
+        font-size: 0.85rem;
+        min-width: 100px;
+        color: var(--text-color);
+      }
+
+      select,
+      input[type="number"] {
+        padding: 6px 12px;
+        border: 1px solid var(--border-color);
+        border-radius: 6px;
+        background-color: var(--bg-color);
+        color: var(--text-color);
+        font-size: 0.9rem;
+      }
+
+      input[type="range"] {
+        flex: 1;
+        height: 6px;
+        border-radius: 3px;
+        background: var(--border-color);
+        outline: none;
+        -webkit-appearance: none;
+        appearance: none;
+      }
+
+      input[type="range"]::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        background: var(--button-bg);
+        cursor: pointer;
+      }
+
+      input[type="range"]::-moz-range-thumb {
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        background: var(--button-bg);
+        cursor: pointer;
+        border: none;
+      }
+
+      .value-display {
+        min-width: 70px;
+        text-align: right;
+        font-family: "SF Mono", Monaco, "Cascadia Code", "Roboto Mono", Consolas, "Courier New", monospace;
+        font-size: 0.85rem;
+        color: var(--text-color);
+      }
+
+      .button-group {
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+
+      button {
+        padding: 8px 20px;
+        font-size: 0.9rem;
+        font-weight: 500;
+        border: none;
+        border-radius: 6px;
+        background-color: var(--button-bg);
+        color: var(--button-text);
+        cursor: pointer;
+        transition: background-color 0.2s ease;
+      }
+
+      button:hover {
+        background-color: var(--button-hover);
+      }
+
+      button:active {
+        transform: scale(0.98);
+      }
+
+      .state-selector {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+        gap: 4px;
+        margin-bottom: 4px;
+      }
+
+      .state-button {
+        padding: 4px;
+        background-color: var(--card-bg-color);
+        border: 2px solid var(--border-color);
+        border-radius: 4px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        font-size: 0.75rem;
+        font-weight: 500;
+        color: var(--text-color);
+      }
+
+      .state-button:hover {
+        border-color: var(--button-bg);
+        background-color: var(--button-bg);
+        color: var(--button-text);
+      }
+
+      .state-button.active {
+        border-color: var(--button-bg);
+        background-color: var(--button-bg);
+        color: var(--button-text);
+      }
+
+      .info-section {
+        padding: 10px 14px;
+        background-color: var(--card-bg-color);
+        border-radius: 6px;
+        border: 1px solid var(--border-color);
+        margin-bottom: 10px;
+      }
+
+      .info-section h4 {
+        margin-top: 0;
+        margin-bottom: 6px;
+        font-size: 0.95rem;
+        color: var(--text-color);
+      }
+
+      .info-section p {
+        margin: 0;
+        font-size: 0.85rem;
+        color: var(--text-color-light);
+        line-height: 1.4;
+      }
+
+      @media (max-width: 768px) {
+        body {
+          padding: 8px;
+        }
+
+        .control-row {
+          flex-direction: column;
+          align-items: stretch;
+        }
+
+        label {
+          min-width: auto;
+        }
+
+        .value-display {
+          text-align: left;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="state-selector">
+        <button class="state-button active" data-state="coherent">Coherent State</button>
+        <button class="state-button" data-state="fock">Fock State</button>
+        <button class="state-button" data-state="squeezed">Squeezed State</button>
+        <button class="state-button" data-state="cat">Schrödinger Cat</button>
+        <button class="state-button" data-state="thermal">Thermal State</button>
+      </div>
+
+      <div class="canvas-container">
+        <canvas id="wignerCanvas"></canvas>
+      </div>
+
+      <div class="controls">
+        <div class="control-group">
+          <div class="control-row">
+            <label for="alphaReal">α (real):</label>
+            <input type="range" id="alphaReal" min="-3" max="3" step="0.1" value="2" />
+            <span class="value-display" id="alphaRealValue">2.0</span>
+          </div>
+          <div class="control-row">
+            <label for="alphaImag">α (imag):</label>
+            <input type="range" id="alphaImag" min="-3" max="3" step="0.1" value="0" />
+            <span class="value-display" id="alphaImagValue">0.0</span>
+          </div>
+        </div>
+
+        <div class="control-group">
+          <div class="control-row">
+            <label for="squeezing">Squeezing (r):</label>
+            <input type="range" id="squeezing" min="0" max="2" step="0.1" value="0" />
+            <span class="value-display" id="squeezingValue">0.0</span>
+          </div>
+          <div class="control-row">
+            <label for="fockN">Fock n:</label>
+            <input type="range" id="fockN" min="0" max="10" step="1" value="0" />
+            <span class="value-display" id="fockNValue">0</span>
+          </div>
+        </div>
+
+        <div class="control-group">
+          <div class="control-row">
+            <label for="timeSpeed">Time Speed:</label>
+            <input type="range" id="timeSpeed" min="0" max="2" step="0.1" value="1" />
+            <span class="value-display" id="timeSpeedValue">1.0x</span>
+          </div>
+        </div>
+
+        <div class="button-group">
+          <button id="playPauseBtn">Pause</button>
+          <button id="resetBtn">Reset Time</button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const canvas = document.getElementById("wignerCanvas");
+      const ctx = canvas.getContext("2d");
+
+      // Set canvas size - smaller for more compact layout
+      canvas.width = Math.min(320, window.innerWidth - 40);
+      canvas.height = canvas.width; // Square canvas
+
+      const width = canvas.width;
+      const height = canvas.height;
+
+      // Simulation parameters
+      let time = 0;
+      let isPlaying = true;
+      let timeSpeed = 1.0;
+      let currentState = "coherent";
+
+      // State parameters
+      let alphaReal = 2.0;
+      let alphaImag = 0.0;
+      let squeezing = 0.0;
+      let fockN = 0;
+      let thermalN = 1.0;
+
+      // Phase space grid
+      const gridSize = 100;
+      const xRange = 6; // From -3 to 3
+      const pRange = 6;
+
+      // UI elements
+      const alphaRealSlider = document.getElementById("alphaReal");
+      const alphaImagSlider = document.getElementById("alphaImag");
+      const squeezingSlider = document.getElementById("squeezing");
+      const fockNSlider = document.getElementById("fockN");
+      const timeSpeedSlider = document.getElementById("timeSpeed");
+      const playPauseBtn = document.getElementById("playPauseBtn");
+      const resetBtn = document.getElementById("resetBtn");
+      const stateButtons = document.querySelectorAll(".state-button");
+
+      // Event listeners
+      alphaRealSlider.addEventListener("input", (e) => {
+        alphaReal = parseFloat(e.target.value);
+        document.getElementById("alphaRealValue").textContent = alphaReal.toFixed(1);
+      });
+
+      alphaImagSlider.addEventListener("input", (e) => {
+        alphaImag = parseFloat(e.target.value);
+        document.getElementById("alphaImagValue").textContent = alphaImag.toFixed(1);
+      });
+
+      squeezingSlider.addEventListener("input", (e) => {
+        squeezing = parseFloat(e.target.value);
+        document.getElementById("squeezingValue").textContent = squeezing.toFixed(1);
+      });
+
+      fockNSlider.addEventListener("input", (e) => {
+        fockN = parseInt(e.target.value);
+        document.getElementById("fockNValue").textContent = fockN;
+      });
+
+      timeSpeedSlider.addEventListener("input", (e) => {
+        timeSpeed = parseFloat(e.target.value);
+        document.getElementById("timeSpeedValue").textContent = timeSpeed.toFixed(1) + "x";
+      });
+
+      playPauseBtn.addEventListener("click", () => {
+        isPlaying = !isPlaying;
+        playPauseBtn.textContent = isPlaying ? "Pause" : "Play";
+      });
+
+      resetBtn.addEventListener("click", () => {
+        time = 0;
+      });
+
+      stateButtons.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          stateButtons.forEach((b) => b.classList.remove("active"));
+          btn.classList.add("active");
+          currentState = btn.dataset.state;
+          time = 0;
+        });
+      });
+
+      // Factorial function
+      function factorial(n) {
+        if (n <= 1) return 1;
+        let result = 1;
+        for (let i = 2; i <= n; i++) result *= i;
+        return result;
+      }
+
+      // Hermite polynomial
+      function hermite(n, x) {
+        if (n === 0) return 1;
+        if (n === 1) return 2 * x;
+
+        let h0 = 1;
+        let h1 = 2 * x;
+        let hn;
+
+        for (let i = 2; i <= n; i++) {
+          hn = 2 * x * h1 - 2 * (i - 1) * h0;
+          h0 = h1;
+          h1 = hn;
+        }
+        return h1;
+      }
+
+      // Wigner function for coherent state
+      function wignerCoherent(x, p, alpha, t) {
+        const omega = 1.0;
+        // Rotating frame
+        const alphaRot = alpha * Math.cos(omega * t) - alphaImag * Math.sin(omega * t);
+        const alphaRotImag = alpha * Math.sin(omega * t) + alphaImag * Math.cos(omega * t);
+
+        const dx = x - Math.sqrt(2) * alphaRot;
+        const dp = p - Math.sqrt(2) * alphaRotImag;
+        return (2 / Math.PI) * Math.exp(-2 * (dx * dx + dp * dp));
+      }
+
+      // Wigner function for Fock state
+      function wignerFock(x, p, n) {
+        const r2 = 2 * (x * x + p * p);
+        const L = laguerreL(n, r2);
+        return (2 / Math.PI) * Math.pow(-1, n) * Math.exp(-r2) * L;
+      }
+
+      // Laguerre polynomial
+      function laguerreL(n, x) {
+        if (n === 0) return 1;
+        if (n === 1) return 1 - x;
+
+        let l0 = 1;
+        let l1 = 1 - x;
+        let ln;
+
+        for (let i = 2; i <= n; i++) {
+          ln = ((2 * i - 1 - x) * l1 - (i - 1) * l0) / i;
+          l0 = l1;
+          l1 = ln;
+        }
+        return l1;
+      }
+
+      // Wigner function for squeezed state
+      function wignerSqueezed(x, p, r, t) {
+        const omega = 1.0;
+        const cos2t = Math.cos(2 * omega * t);
+        const sin2t = Math.sin(2 * omega * t);
+
+        const expR = Math.exp(2 * r);
+        const expMR = Math.exp(-2 * r);
+
+        const sigmaX = Math.sqrt((expR + expMR) / 4 + ((expR - expMR) / 4) * cos2t);
+        const sigmaP = Math.sqrt((expR + expMR) / 4 - ((expR - expMR) / 4) * cos2t);
+
+        return (2 / Math.PI) * Math.exp(-2 * ((x * x) / (sigmaX * sigmaX) + (p * p) / (sigmaP * sigmaP)));
+      }
+
+      // Wigner function for Schrödinger cat state
+      function wignerCat(x, p, alpha, t) {
+        const omega = 1.0;
+        const alphaRot = alpha * Math.cos(omega * t);
+        const alphaRotImag = alpha * Math.sin(omega * t);
+
+        const w1 = wignerCoherent(x, p, alphaRot, 0);
+        const w2 = wignerCoherent(x, p, -alphaRot, 0);
+
+        // Interference term
+        const dx = x;
+        const dp = p;
+        const interference = (4 / Math.PI) * Math.exp(-2 * (dx * dx + dp * dp)) * Math.cos(4 * alphaRot * x);
+
+        return (w1 + w2 + interference) / 2;
+      }
+
+      // Wigner function for thermal state
+      function wignerThermal(x, p, nBar) {
+        const r2 = 2 * (x * x + p * p);
+        const denom = 2 * nBar + 1;
+        return (2 / Math.PI) * (1 / denom) * Math.exp(-r2 / denom);
+      }
+
+      // Compute Wigner function based on current state
+      function computeWigner(x, p) {
+        switch (currentState) {
+          case "coherent":
+            return wignerCoherent(x, p, alphaReal, time);
+          case "fock":
+            return wignerFock(x, p, fockN);
+          case "squeezed":
+            return wignerSqueezed(x, p, squeezing, time);
+          case "cat":
+            return wignerCat(x, p, alphaReal, time);
+          case "thermal":
+            return wignerThermal(x, p, 1.5);
+          default:
+            return 0;
+        }
+      }
+
+      // Color mapping (blue-white-red for negative-zero-positive)
+      function wignerToColor(w, maxW) {
+        const normalized = w / (maxW || 1);
+
+        if (normalized > 0) {
+          // Positive: white to red
+          const t = Math.min(normalized * 2, 1);
+          const r = 255;
+          const g = Math.floor(255 * (1 - t));
+          const b = Math.floor(255 * (1 - t));
+          return `rgb(${r}, ${g}, ${b})`;
+        } else {
+          // Negative: white to blue
+          const t = Math.min(Math.abs(normalized) * 2, 1);
+          const r = Math.floor(255 * (1 - t));
+          const g = Math.floor(255 * (1 - t));
+          const b = 255;
+          return `rgb(${r}, ${g}, ${b})`;
+        }
+      }
+
+      // Draw function
+      function draw() {
+        const isDark = document.documentElement.getAttribute("data-theme") === "dark";
+        const bgColor = isDark ? "#1c1c1d" : "#ffffff";
+
+        ctx.fillStyle = bgColor;
+        ctx.fillRect(0, 0, width, height);
+
+        const pixelWidth = width / gridSize;
+        const pixelHeight = height / gridSize;
+
+        let maxW = 0;
+        const wignerValues = [];
+
+        // Compute all Wigner values
+        for (let i = 0; i < gridSize; i++) {
+          wignerValues[i] = [];
+          for (let j = 0; j < gridSize; j++) {
+            const x = ((i / gridSize) * xRange - xRange / 2) * 1.5;
+            const p = ((j / gridSize) * pRange - pRange / 2) * 1.5;
+            const w = computeWigner(x, p);
+            wignerValues[i][j] = w;
+            maxW = Math.max(maxW, Math.abs(w));
+          }
+        }
+
+        // Draw Wigner function
+        for (let i = 0; i < gridSize; i++) {
+          for (let j = 0; j < gridSize; j++) {
+            const w = wignerValues[i][j];
+            const color = wignerToColor(w, maxW);
+            ctx.fillStyle = color;
+            ctx.fillRect(i * pixelWidth, (gridSize - 1 - j) * pixelHeight, pixelWidth + 1, pixelHeight + 1);
+          }
+        }
+
+        // Draw axes
+        ctx.strokeStyle = "#000000";
+        ctx.lineWidth = 1;
+
+        // X axis
+        const yCenter = height / 2;
+        ctx.beginPath();
+        ctx.moveTo(0, yCenter);
+        ctx.lineTo(width, yCenter);
+        ctx.stroke();
+
+        // P axis
+        const xCenter = width / 2;
+        ctx.beginPath();
+        ctx.moveTo(xCenter, 0);
+        ctx.lineTo(xCenter, height);
+        ctx.stroke();
+
+        // Labels
+        ctx.fillStyle = "#000000";
+        ctx.font = "14px -apple-system, BlinkMacSystemFont, sans-serif";
+        ctx.fillText("q", width - 20, yCenter - 10);
+        ctx.fillText("p", xCenter + 10, 20);
+      }
+
+      // Animation loop
+      function animate() {
+        if (isPlaying) {
+          time += 0.02 * timeSpeed;
+        }
+
+        draw();
+        requestAnimationFrame(animate);
+      }
+
+      // Start animation
+      animate();
+    </script>
+  </body>
+</html>

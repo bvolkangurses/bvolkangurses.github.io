@@ -218,6 +218,27 @@ document.addEventListener('DOMContentLoaded', updateGitHubStats);
       </div>
     </div>
 
+    <!-- Quantum to Classical -->
+    <div class="col">
+      <div class="card software-card h-100">
+        <div class="card-body d-flex flex-column">
+          <div class="software-icon mb-3 text-center">
+            <i class="fas fa-exchange-alt fa-3x"></i>
+          </div>
+          <h5 class="card-title">Quantum to Classical</h5>
+          <p class="card-text flex-grow-1">Explore the correspondence principle by visualizing how quantum systems transition to classical behavior as h approaches zero.</p>
+          <div class="mt-auto">
+            <a href="/simulations/quantumtoclassical/" class="btn software-btn me-2">
+              <i class="fas fa-play"></i> Launch
+            </a>
+            <a href="https://github.com/bvolkangurses/quantumtoclassical" class="btn software-btn-outline">
+              <i class="fab fa-github"></i> Code
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- Wigner Function Simulation -->
     <div class="col">
       <div class="card software-card h-100">
@@ -228,6 +249,9 @@ document.addEventListener('DOMContentLoaded', updateGitHubStats);
           <h5 class="card-title">Wigner Function Simulation</h5>
           <p class="card-text flex-grow-1">Design your own quantum state in phase space using the Wigner quasiprobability distribution and see it time evolve.</p>
           <div class="mt-auto">
+            <a href="/simulations/wignersim/" class="btn software-btn me-2">
+              <i class="fas fa-play"></i> Launch
+            </a>
             <a href="https://github.com/bvolkangurses/wignersim" class="btn software-btn-outline">
               <i class="fab fa-github"></i> Code
             </a>
@@ -248,29 +272,6 @@ document.addEventListener('DOMContentLoaded', updateGitHubStats);
   </div>
 
   <div class="row row-cols-1 row-cols-md-2 g-4 mb-5">
-    
-    <!-- Example Game Project -->
-    <!--
-    <div class="col">
-      <div class="card software-card h-100">
-        <div class="card-body d-flex flex-column">
-          <div class="software-icon mb-3 text-center">
-            <i class="fas fa-gamepad fa-3x"></i>
-          </div>
-          <h5 class="card-title">Quantum Puzzle Game</h5>
-          <p class="card-text flex-grow-1">Educational game exploring quantum mechanics principles through interactive puzzles.</p>
-          <div class="mt-auto">
-            <a href="#" class="btn software-btn me-2">
-              <i class="fas fa-play"></i> Play
-            </a>
-            <a href="#" class="btn software-btn-outline">
-              <i class="fab fa-github"></i> Code
-            </a>
-          </div>
-        </div>
-      </div>
-    </div>
-    -->
 
     <!-- Neural Network Architect -->
     <div class="col">

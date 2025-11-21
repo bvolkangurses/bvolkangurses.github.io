@@ -130,6 +130,7 @@
         flex-wrap: wrap;
         gap: 15px;
         margin-bottom: 20px;
+        margin-top: 15px;
         justify-content: center;
         align-items: center;
       }
@@ -223,28 +224,24 @@
   </head>
   <body>
     <div class="container">
+      <div style="text-align: center; margin-bottom: 5px; font-size: 14px; color: var(--text-color-light)">
+        <strong>Click to initialize Gaussian wavepackets</strong>
+      </div>
+      <canvas id="canvas" width="598" height="460"></canvas>
       <div class="controls">
         <div class="control-group">
           <label>Time Step:</label>
           <input type="range" id="timeStep" min="1" max="1000" value="10" />
           <span id="timeStepValue">0.01</span>
         </div>
-
         <div class="control-group">
           <label>Coupling:</label>
           <input type="range" id="coupling" min="0" max="100" value="30" />
           <span id="couplingValue">0.3</span>
         </div>
-
         <button id="clearBtn">Clear All</button>
         <button id="pauseBtn">Pause</button>
       </div>
-
-      <div style="text-align: center; margin-bottom: 5px; font-size: 14px; color: var(--text-color-light)">
-        <strong>Click to initialize Gaussian wavepackets</strong>
-      </div>
-
-      <canvas id="canvas" width="598" height="460"></canvas>
     </div>
 
     <script>
