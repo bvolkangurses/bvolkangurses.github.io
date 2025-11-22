@@ -335,7 +335,7 @@ document.addEventListener('DOMContentLoaded', updateGitHubStats);
             <i class="fas fa-chart-line fa-3x"></i>
           </div>
           <h5 class="card-title">WAIrren Buffett</h5>
-          <p class="card-text flex-grow-1">AI-assisted financial planner and investor that provides personalized stock picks and financial projections.</p>
+          <p class="card-text flex-grow-1">AI-assisted quantitative trader that provides market analysis and automatic trading with real-time market data.</p>
           <div class="mt-auto">
             <a href="https://github.com/bvolkangurses/wairrenbuffett" class="btn software-btn-outline">
               <i class="fab fa-github"></i> Code
