@@ -204,6 +204,27 @@ document.addEventListener('DOMContentLoaded', updateGitHubStats);
       </div>
     </div>
 
+    <!-- Quantum Phased Array -->
+    <div class="col">
+      <div class="card software-card h-100">
+        <div class="card-body d-flex flex-column">
+          <div class="software-icon mb-3 text-center">
+            <i class="fas fa-wave-square fa-3x"></i>
+          </div>
+          <h5 class="card-title">Quantum Phased Array</h5>
+          <p class="card-text flex-grow-1">Visualize the quantum interference and quantum beamsteering in quantum phased arrays by taking h from 0 to 1.</p>
+          <div class="mt-auto">
+            <a href="/simulations/quantumphasedarray/" class="btn software-btn me-2">
+              <i class="fas fa-play"></i> Launch
+            </a>
+            <a href="https://github.com/bvolkangurses/quantumphasedarray" class="btn software-btn-outline">
+              <i class="fab fa-github"></i> Code
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- Add more animation projects here -->
 
   </div>

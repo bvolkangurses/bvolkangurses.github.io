@@ -1,0 +1,567 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Quantum Phased Array Animation</title>
+    <script>
+      // Security: Check if accessed from authorized domain
+      (function () {
+        const allowedDomains = ["volkangurses.com", "bvolkangurses.github.io", "localhost", "127.0.0.1"];
+
+        const currentDomain = window.location.hostname;
+        const referrer = document.referrer;
+
+        const isAllowedDomain = allowedDomains.some((domain) => currentDomain.includes(domain));
+        const hasValidReferrer = referrer && allowedDomains.some((domain) => referrer.includes(domain));
+
+        if (isAllowedDomain && !hasValidReferrer && !sessionStorage.getItem("auth_sim")) {
+          window.location.href = "/software/";
+        }
+
+        if (!isAllowedDomain) {
+          window.location.href = "/";
+        }
+      })();
+    </script>
+    <script>
+      // Detect theme from parent page or system preference
+      (function () {
+        let isDark = false;
+
+        try {
+          if (window.parent && window.parent.document) {
+            const parentHtml = window.parent.document.documentElement;
+            isDark = parentHtml.getAttribute("data-theme") === "dark";
+          }
+        } catch (e) {
+          isDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+        }
+
+        document.documentElement.setAttribute("data-theme", isDark ? "dark" : "light");
+
+        try {
+          if (window.parent && window.parent.document) {
+            const observer = new MutationObserver(() => {
+              const parentHtml = window.parent.document.documentElement;
+              const parentTheme = parentHtml.getAttribute("data-theme");
+              if (parentTheme) {
+                document.documentElement.setAttribute("data-theme", parentTheme);
+              }
+            });
+            observer.observe(window.parent.document.documentElement, {
+              attributes: true,
+              attributeFilter: ["data-theme"],
+            });
+          }
+        } catch (e) {}
+      })();
+    </script>
+    <style>
+      :root {
+        --bg-color: #ffffff;
+        --text-color: #000000;
+        --text-color-light: #828282;
+        --card-bg-color: #f8f9fa;
+        --border-color: #dee2e6;
+        --button-bg: #b509ac;
+        --button-hover: #8a0782;
+        --button-text: #ffffff;
+      }
+
+      html[data-theme="dark"] {
+        --bg-color: #1c1c1d;
+        --text-color: #e0e0e0;
+        --text-color-light: #828282;
+        --card-bg-color: #212529;
+        --border-color: #424246;
+        --button-bg: #2698ba;
+        --button-hover: #1a7a95;
+        --button-text: #ffffff;
+      }
+
+      * {
+        transition:
+          background-color 0.3s ease,
+          color 0.1s ease,
+          border-color 0.3s ease;
+      }
+
+      body {
+        margin: 0;
+        padding: 20px 20px 0px 20px;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        background: var(--bg-color);
+        color: var(--text-color);
+        overflow-x: hidden;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      .controls {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 15px;
+        margin-top: 20px;
+        margin-bottom: 20px;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .control-group {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      label {
+        font-size: 12px;
+        color: var(--text-color-light);
+        min-width: 100px;
+      }
+
+      input[type="range"] {
+        width: 120px;
+      }
+
+      button {
+        background: var(--button-bg);
+        color: var(--button-text);
+        border: 1px solid var(--button-bg);
+        padding: 8px 16px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-weight: bold;
+        font-size: 12px;
+        transition:
+          background 0.2s ease,
+          border-color 0.2s ease,
+          opacity 0.2s ease;
+      }
+
+      button:hover {
+        background: var(--button-hover);
+        border-color: var(--button-hover);
+      }
+
+      button.active {
+        background: var(--button-hover);
+        border-color: var(--button-hover);
+      }
+
+      .canvas-container {
+        text-align: center;
+        margin-bottom: 10px;
+      }
+
+      canvas {
+        border: 1px solid var(--border-color);
+        display: block;
+        margin: 0 auto;
+        background: #000;
+      }
+
+      .info-panel {
+        margin-top: 10px;
+        padding: 15px;
+        background: var(--card-bg-color);
+        border-radius: 8px;
+        font-size: 13px;
+        line-height: 1.6;
+        border: 1px solid var(--border-color);
+      }
+
+      .info-panel h4 {
+        margin: 0 0 8px 0;
+        font-size: 14px;
+        color: var(--text-color);
+      }
+
+      .info-panel p {
+        margin: 5px 0;
+        color: var(--text-color-light);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+
+      <div class="canvas-container">
+        <canvas id="canvas" width="700" height="380"></canvas>
+      </div>
+
+      <div class="controls">
+        <div class="control-group">
+          <label>Number of Sources:</label>
+          <input type="range" id="numSources" min="2" max="12" value="6" />
+          <span id="numSourcesValue">6</span>
+        </div>
+
+        <div class="control-group">
+          <label>Phase Shift:</label>
+          <input type="range" id="phaseShift" min="0" max="628" value="0" />
+          <span id="phaseShiftValue">0.00</span>
+        </div>
+
+        <div class="control-group">
+          <label>Planck Number (h):</label>
+          <input type="range" id="hbar" min="0" max="100" value="100" />
+          <span id="hbarValue">1.00</span>
+        </div>
+
+        <button id="animateBtn">Animate Phase</button>
+        <button id="resetBtn">Reset</button>
+      </div>
+    </div>
+
+    <script>
+      class PhasedArraySimulation {
+        constructor() {
+          this.canvas = document.getElementById("canvas");
+          this.ctx = this.canvas.getContext("2d");
+
+          this.width = this.canvas.width;
+          this.height = this.canvas.height;
+
+          this.numSources = 6;
+          this.phaseShift = 0;
+          this.hbar = 1.0;
+          this.isAnimating = false;
+          this.animationId = null;
+          this.time = 0;
+
+          // Photon particles for quantum regime
+          this.photons = [];
+          this.maxPhotons = 400;
+
+          this.setupControls();
+          this.animate();
+        }
+
+        setupControls() {
+          const numSourcesSlider = document.getElementById("numSources");
+          const phaseShiftSlider = document.getElementById("phaseShift");
+          const hbarSlider = document.getElementById("hbar");
+          const animateBtn = document.getElementById("animateBtn");
+          const resetBtn = document.getElementById("resetBtn");
+
+          numSourcesSlider.addEventListener("input", (e) => {
+            this.numSources = parseInt(e.target.value);
+            document.getElementById("numSourcesValue").textContent = this.numSources;
+          });
+
+          phaseShiftSlider.addEventListener("input", (e) => {
+            this.phaseShift = parseFloat(e.target.value) / 100;
+            document.getElementById("phaseShiftValue").textContent = this.phaseShift.toFixed(2);
+          });
+
+          hbarSlider.addEventListener("input", (e) => {
+            this.hbar = parseFloat(e.target.value) / 100;
+            document.getElementById("hbarValue").textContent = this.hbar.toFixed(2);
+          });
+
+          animateBtn.addEventListener("click", () => {
+            this.isAnimating = !this.isAnimating;
+            animateBtn.textContent = this.isAnimating ? "Stop Animation" : "Animate Phase";
+            animateBtn.classList.toggle("active");
+          });
+
+          resetBtn.addEventListener("click", () => {
+            this.phaseShift = 0;
+            this.hbar = 1.0;
+            this.numSources = 6;
+            this.photons = [];
+            document.getElementById("phaseShiftValue").textContent = "0.00";
+            document.getElementById("hbarValue").textContent = "1.00";
+            document.getElementById("numSourcesValue").textContent = "6";
+            document.getElementById("phaseShift").value = 0;
+            document.getElementById("hbar").value = 100;
+            document.getElementById("numSources").value = 6;
+          });
+        }
+
+        animate() {
+          if (this.isAnimating) {
+            this.phaseShift += 0.03;
+            if (this.phaseShift > Math.PI * 2) {
+              this.phaseShift -= Math.PI * 2;
+            }
+            document.getElementById("phaseShift").value = Math.floor(this.phaseShift * 100);
+            document.getElementById("phaseShiftValue").textContent = this.phaseShift.toFixed(2);
+          }
+
+          this.time += 0.016;
+          this.render();
+          requestAnimationFrame(() => this.animate());
+        }
+
+        render() {
+          this.ctx.fillStyle = "#000000";
+          this.ctx.fillRect(0, 0, this.width, this.height);
+
+          // Render wavefunction interference pattern
+          this.renderWavefunction();
+
+          // Render quantum photons with isotropic emission
+          // h=1: photons steered by quantum interference
+          // h=0: photons remain isotropic (no quantum steering)
+          this.renderQuantumPhotons();
+
+          // Always draw the array sources
+          this.drawSources();
+        }
+
+        renderWavefunction() {
+          const arrayX = this.width * 0.5; // Center horizontally
+          const sourceSpacing = Math.min(50, this.height / (this.numSources + 2));
+          
+          // Sample wavefunction on a grid - entire canvas
+          const gridSpacing = 2; // Grid spacing
+          const baseOpacity = 0.5; // Higher base opacity
+          
+          for (let x = 0; x < this.width;x += gridSpacing) {
+            for (let y = 0; y < this.height; y += gridSpacing) {
+              // Calculate wavefunction amplitude from all sources
+              let totalRe = 0;
+              let totalIm = 0;
+              let totalCoherence = 0;
+              
+              for (let n = 0; n < this.numSources; n++) {
+                const sourceY = this.height / 2 + (n - (this.numSources - 1) / 2) * sourceSpacing;
+                const dx = x - arrayX;
+                const dy = y - sourceY;
+                const r = Math.sqrt(dx * dx + dy * dy);
+                
+                if (r > 1) {
+                  // Coherence length: infinite at h=1, very short at h=0
+                  // At h=0, wavefunctions lose coherence and can't interfere
+                  const coherenceLength = 10 + this.hbar * 1000; // 10 pixels at h=0, 1010 at h=1
+                  const coherenceFactor = Math.exp(-r / coherenceLength);
+                  totalCoherence += coherenceFactor;
+                  
+                  // Phase includes distance and source phase shift
+                  const phase = r * 0.1 + n * this.phaseShift + this.time * 2;
+                  const amplitude = coherenceFactor / Math.sqrt(r);
+                  
+                  totalRe += amplitude * Math.cos(phase);
+                  totalIm += amplitude * Math.sin(phase);
+                }
+              }
+              
+              // Probability amplitude |ψ|²
+              const intensity = totalRe * totalRe + totalIm * totalIm;
+              
+              // Better normalization: scale by average coherence factor
+              // At h=0, coherence is very low, so we need stronger normalization
+              const avgCoherence = totalCoherence / this.numSources;
+              const normalizedIntensity = intensity / (avgCoherence * this.numSources);
+              
+              // Color based on intensity - highly visible
+              const scaledIntensity = Math.min(1, normalizedIntensity * 20.0);
+              const alpha = Math.min(0.95, scaledIntensity * baseOpacity * 5);
+              
+              if (alpha > 0.01) {
+                // Use bright cyan color for high visibility
+                this.ctx.fillStyle = `rgba(100, 220, 255, ${alpha})`;
+                this.ctx.fillRect(x - gridSpacing/2, y - gridSpacing/2, gridSpacing, gridSpacing);
+              }
+            }
+          }
+        }
+
+        renderQuantumPhotons() {
+          const arrayX = this.width * 0.5; // Center horizontally
+          const sourceSpacing = Math.min(50, this.height / (this.numSources + 2));
+
+          // Constant emission rate - photon count doesn't change with h
+          const emissionProbability = 0.7;
+
+          // Emit new photons with probability based on h value
+          if (Math.random() < emissionProbability && this.photons.length < this.maxPhotons) {
+            // Choose source randomly
+            const sourceIndex = Math.floor(Math.random() * this.numSources);
+            const sourceY = this.height / 2 + (sourceIndex - (this.numSources - 1) / 2) * sourceSpacing;
+
+            // ISOTROPIC EMISSION: Always emit in random directions
+            // At h=0 (classical): full 360° emission, no steering afterward
+            // At h=1 (quantum): still isotropic emission, but strong wavefunction interference steering
+            const randomAngle = Math.random() * Math.PI * 2; // Full 360° always
+
+            this.photons.push({
+              x: arrayX,
+              y: sourceY,
+              vx: Math.cos(randomAngle) * 2, // Horizontal component
+              vy: Math.sin(randomAngle) * 2, // Vertical component
+              life: 1.0,
+              size: 2 + Math.random() * 1,
+              sourceIndex: sourceIndex,
+              age: 0,
+            });
+          }
+
+          // Update and draw photons
+          this.photons = this.photons.filter((photon) => {
+            photon.age += 1;
+
+            // Apply quantum steering based on wavefunction interference
+            // At h=1: strong steering toward interference maxima (wavefunction directs photons)
+            // At h=0: no steering (isotropic emission remains isotropic, classical)
+            if (this.hbar > 0 && photon.age % 2 === 0) {
+              const steeringStrength = this.hbar * 0.25;
+              const arrayX = this.width * 0.5;
+              
+              // Calculate current radial direction from array center
+              const dx = photon.x - arrayX;
+              const sourceY = this.height / 2 + (photon.sourceIndex - (this.numSources - 1) / 2) * Math.min(50, this.height / (this.numSources + 2));
+              const dy = photon.y - sourceY;
+              const currentAngle = Math.atan2(dy, dx);
+              
+              // Only sample directions in the outward hemisphere (±90° from current radial direction)
+              const interferenceDirection = this.calculateInterferenceDirection(photon.x, photon.y, photon.sourceIndex, currentAngle);
+
+              // Gradually steer velocity toward interference maxima
+              photon.vx += (interferenceDirection.x - photon.vx) * steeringStrength;
+              photon.vy += (interferenceDirection.y - photon.vy) * steeringStrength;
+
+              // Normalize velocity to maintain constant speed
+              const speed = Math.sqrt(photon.vx * photon.vx + photon.vy * photon.vy);
+              if (speed > 0) {
+                photon.vx = (photon.vx / speed) * 2;
+                photon.vy = (photon.vy / speed) * 2;
+              }
+            }
+
+            photon.x += photon.vx;
+            photon.y += photon.vy;
+            photon.life -= 0.005;
+
+            if (photon.life > 0 && photon.y < this.height && photon.x > 0 && photon.x < this.width) {
+              // Draw photon with constant intensity (independent of h)
+              const intensity = photon.life;
+              const gradient = this.ctx.createRadialGradient(photon.x, photon.y, 0, photon.x, photon.y, photon.size * 3);
+              gradient.addColorStop(0, `rgba(100, 200, 255, ${intensity})`);
+              gradient.addColorStop(0.5, `rgba(50, 150, 255, ${intensity * 0.5})`);
+              gradient.addColorStop(1, `rgba(0, 100, 255, 0)`);
+
+              this.ctx.fillStyle = gradient;
+              this.ctx.beginPath();
+              this.ctx.arc(photon.x, photon.y, photon.size * 3, 0, Math.PI * 2);
+              this.ctx.fill();
+
+              return true;
+            }
+            return false;
+          });
+        }
+
+        calculateInterferenceDirection(x, y, sourceIndex, currentAngle) {
+          // Calculate where wavefunction interference is constructive
+          // This determines the quantum steering direction
+
+          const arrayX = this.width * 0.5; // Center horizontally
+          const sourceSpacing = Math.min(50, this.height / (this.numSources + 2));
+
+          let maxAmplitudeX = Math.cos(currentAngle);
+          let maxAmplitudeY = Math.sin(currentAngle);
+          let maxAmplitude = 0;
+
+          // Sample nearby directions to find maximum wavefunction amplitude
+          // Only sample in outward hemisphere (±90° from current radial direction)
+          const numSamples = 12;
+          for (let i = 0; i < numSamples; i++) {
+            const angleOffset = (i / numSamples - 0.5) * Math.PI; // -90° to +90° relative to current
+            const testAngle = currentAngle + angleOffset;
+            const testDx = Math.cos(testAngle) * 30; // Horizontal
+            const testDy = Math.sin(testAngle) * 30; // Vertical
+            const testX = x + testDx;
+            const testY = y + testDy;
+
+            // Calculate wavefunction amplitude at test point from all sources
+            let totalRe = 0;
+            let totalIm = 0;
+
+            for (let n = 0; n < this.numSources; n++) {
+              const sourceY = this.height / 2 + (n - (this.numSources - 1) / 2) * sourceSpacing;
+              const dx = testX - arrayX;
+              const dy = testY - sourceY;
+              const r = Math.sqrt(dx * dx + dy * dy);
+
+              if (r > 1) {
+                // Phase includes source phase shift
+                const phase = r * 0.1 + n * this.phaseShift;
+                const amplitude = 1 / Math.sqrt(r + 1);
+
+                totalRe += amplitude * Math.cos(phase);
+                totalIm += amplitude * Math.sin(phase);
+              }
+            }
+
+            // Probability amplitude |ψ|²
+            const amplitude = totalRe * totalRe + totalIm * totalIm;
+
+            if (amplitude > maxAmplitude) {
+              maxAmplitude = amplitude;
+              maxAmplitudeX = testDx;
+              maxAmplitudeY = testDy;
+            }
+          }
+
+          // Return direction toward maximum interference
+          const norm = Math.sqrt(maxAmplitudeX * maxAmplitudeX + maxAmplitudeY * maxAmplitudeY);
+          if (norm > 0) {
+            return { x: maxAmplitudeX / norm, y: maxAmplitudeY / norm };
+          }
+          return { x: 1, y: 0 };
+        }
+
+        drawSources() {
+          const arrayX = this.width * 0.5; // Center horizontally
+          const sourceSpacing = Math.min(50, this.height / (this.numSources + 2));
+
+          // Color transitions from green (classical) to cyan (quantum)
+          const quantumR = 0;
+          const quantumG = Math.floor(255 * (1 - this.hbar * 0.3)); // More green at low h
+          const quantumB = Math.floor(255 * (0.5 + this.hbar * 0.5)); // More blue at high h
+          const color = `rgb(${quantumR}, ${quantumG}, ${quantumB})`;
+
+          for (let n = 0; n < this.numSources; n++) {
+            const sourceY = this.height / 2 + (n - (this.numSources - 1) / 2) * sourceSpacing;
+
+            // Draw source emitter
+            this.ctx.fillStyle = color;
+            this.ctx.beginPath();
+            this.ctx.arc(arrayX, sourceY, 5, 0, Math.PI * 2);
+            this.ctx.fill();
+
+            // Draw glow
+            const gradient = this.ctx.createRadialGradient(arrayX, sourceY, 0, arrayX, sourceY, 12);
+            gradient.addColorStop(0, color);
+            gradient.addColorStop(1, `rgba(${quantumR}, ${quantumG}, ${quantumB}, 0)`);
+            this.ctx.fillStyle = gradient;
+            this.ctx.beginPath();
+            this.ctx.arc(arrayX, sourceY, 12, 0, Math.PI * 2);
+            this.ctx.fill();
+          }
+
+          // Draw vertical array baseline
+          const topY = this.height / 2 - ((this.numSources - 1) / 2) * sourceSpacing - 20;
+          const bottomY = this.height / 2 + ((this.numSources - 1) / 2) * sourceSpacing + 20;
+          this.ctx.strokeStyle = `rgba(${quantumR}, ${quantumG}, ${quantumB}, 0.3)`;
+          this.ctx.lineWidth = 2;
+          this.ctx.beginPath();
+          this.ctx.moveTo(arrayX, topY);
+          this.ctx.lineTo(arrayX, bottomY);
+          this.ctx.stroke();
+        }
+      }
+
+      // Initialize simulation
+      window.addEventListener("DOMContentLoaded", () => {
+        new PhasedArraySimulation();
+      });
+    </script>
+  </body>
+</html>
